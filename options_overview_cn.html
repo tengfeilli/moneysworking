@@ -1,0 +1,617 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>美股指数期权概览（中文）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 18px;
+    }
+
+    .page {
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .page-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .symbol-picker {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      font-size: 12px;
+    }
+
+    .symbol-picker label {
+      color: #9ca3af;
+    }
+
+    .symbol-picker select {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #4b5563;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .symbol-picker select:focus {
+      border-color: #60a5fa;
+    }
+
+    .overview-table {
+      margin-bottom: 16px;
+      font-size: 12px;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      overflow: hidden;
+    }
+
+    .overview-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .overview-table th,
+    .overview-table td {
+      padding: 6px 10px;
+      text-align: right;
+    }
+
+    .overview-table th:first-child,
+    .overview-table td:first-child {
+      text-align: left;
+    }
+
+    .overview-table thead {
+      background-color: #020617;
+      color: #9ca3af;
+    }
+
+    .overview-table tbody tr:nth-child(even) {
+      background-color: #020617;
+    }
+
+    .metric-change {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-left: 4px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.25), transparent 55%),
+                  #020617;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 14px 16px 16px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.55);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .symbol {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .symbol-sub {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .as-of {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 16px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 12px;
+    }
+
+    .metric-label {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .badge-green {
+      background-color: #16a34a;
+      color: #ecfdf3;
+    }
+
+    .badge-yellow {
+      background-color: #eab308;
+      color: #fefce8;
+    }
+
+    .badge-red {
+      background-color: #dc2626;
+      color: #fef2f2;
+    }
+
+    .badge-gray {
+      background-color: #4b5563;
+      color: #e5e7eb;
+    }
+
+    .comment {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #d1d5db;
+    }
+
+    .disclaimer {
+      margin-top: 28px;
+      font-size: 22px;
+      color: #6b7280;
+      border-top: 1px solid #1f2937;
+      padding-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <div class="page-header-top">
+        <div>
+          <div class="page-title">美股指数期权概览</div>
+          <div class="page-subtitle">
+            基于期权市场的日终快照（30天平值隐含波动率、10%虚值 Skew、看涨/看跌持仓比）。
+          </div>
+        </div>
+        <div class="symbol-picker">
+          <label for="symbol-select">标的</label>
+          <select id="symbol-select">
+            
+            <option value="SPX" selected>
+              SPX
+            </option>
+            
+            <option value="NDX" >
+              NDX
+            </option>
+            
+            <option value="SPY" >
+              SPY
+            </option>
+            
+            <option value="QQQ" >
+              QQQ
+            </option>
+            
+          </select>
+        </div>
+      </div>
+      <div class="tagline">
+        数据日期：2025-11-21 · 数据来源：内部期权数据库（标的价格来自 Yahoo!）
+      </div>
+    </header>
+
+    <div class="overview-table">
+      <table>
+        <thead>
+          <tr>
+            <th>标的</th>
+            <th>30天ATM隐含波动率</th>
+            <th>10%虚值看跌 Skew</th>
+            <th>10%虚值看涨 Skew</th>
+            <th>看涨/看跌持仓比</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>SPX</td>
+            <td>
+              23.2%
+              
+            </td>
+            <td>+4.8 波动点</td>
+            <td>-7.8 波动点</td>
+            <td>
+              0.71（平衡）
+              
+            </td>
+          </tr>
+          
+          <tr>
+            <td>NDX</td>
+            <td>
+              0.0%
+              
+            </td>
+            <td>+1.6 波动点</td>
+            <td>+6.2 波动点</td>
+            <td>
+              0.71（平衡）
+              
+            </td>
+          </tr>
+          
+          <tr>
+            <td>SPY</td>
+            <td>
+              0.0%
+              
+            </td>
+            <td>+6.2 波动点</td>
+            <td>+6.2 波动点</td>
+            <td>
+              0.46（看跌占优）
+              
+            </td>
+          </tr>
+          
+          <tr>
+            <td>QQQ</td>
+            <td>
+              0.0%
+              
+            </td>
+            <td>+6.2 波动点</td>
+            <td>+6.2 波动点</td>
+            <td>
+              0.66（看跌占优）
+              
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-grid">
+      
+      <section class="card" data-symbol="SPX" >
+        <div class="card-header">
+          <div>
+            <div class="symbol">SPX</div>
+            <div class="symbol-sub">
+              标的收盘价：6,602.99
+              
+              · 30天ATM IV：23.2%
+            </div>
+          </div>
+          <div class="as-of">快照日期：2025-11-21</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">30天ATM隐含波动率</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                23.2%
+                
+              </div>
+              <span class="badge badge-yellow">正常</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+4.8 波动点</div>
+              <span class="badge badge-yellow">中性</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">-7.8 波动点</div>
+              <span class="badge badge-red">极端</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                9,026,911 / 12,750,877
+                
+              </div>
+              <span class="badge badge-green">平衡</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          30天平值隐含波动率约为 23.2%，整体水平偏正常。 10%虚值看跌相对ATM贵 +4.8 波动点，反映下行保护需求。 10%虚值看涨相对ATM -7.8 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏平衡（看涨 9,026,911 张 vs 看跌 12,750,877 张）。
+        </div>
+      </section>
+      
+      <section class="card" data-symbol="NDX" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="symbol">NDX</div>
+            <div class="symbol-sub">
+              标的收盘价：24,239.57
+              
+              · 30天ATM IV：0.0%
+            </div>
+          </div>
+          <div class="as-of">快照日期：2025-11-21</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">30天ATM隐含波动率</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                0.0%
+                
+              </div>
+              <span class="badge badge-green">偏低</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+1.6 波动点</div>
+              <span class="badge badge-green">温和</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 波动点</div>
+              <span class="badge badge-red">极端</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                64,625 / 91,493
+                
+              </div>
+              <span class="badge badge-green">平衡</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          30天平值隐含波动率约为 0.0%，整体水平偏偏低。 10%虚值看跌相对ATM贵 +1.6 波动点，反映下行保护需求。 10%虚值看涨相对ATM +6.2 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏平衡（看涨 64,625 张 vs 看跌 91,493 张）。
+        </div>
+      </section>
+      
+      <section class="card" data-symbol="SPY" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="symbol">SPY</div>
+            <div class="symbol-sub">
+              标的收盘价：659.03
+              
+              · 30天ATM IV：0.0%
+            </div>
+          </div>
+          <div class="as-of">快照日期：2025-11-21</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">30天ATM隐含波动率</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                0.0%
+                
+              </div>
+              <span class="badge badge-green">偏低</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 波动点</div>
+              <span class="badge badge-red">极端</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 波动点</div>
+              <span class="badge badge-red">极端</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                5,489,718 / 11,906,341
+                
+              </div>
+              <span class="badge badge-yellow">看跌占优</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          30天平值隐含波动率约为 0.0%，整体水平偏偏低。 10%虚值看跌相对ATM贵 +6.2 波动点，反映下行保护需求。 10%虚值看涨相对ATM +6.2 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 5,489,718 张 vs 看跌 11,906,341 张）。
+        </div>
+      </section>
+      
+      <section class="card" data-symbol="QQQ" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="symbol">QQQ</div>
+            <div class="symbol-sub">
+              标的收盘价：590.07
+              
+              · 30天ATM IV：0.0%
+            </div>
+          </div>
+          <div class="as-of">快照日期：2025-11-21</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">30天ATM隐含波动率</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                0.0%
+                
+              </div>
+              <span class="badge badge-green">偏低</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 波动点</div>
+              <span class="badge badge-red">极端</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 波动点</div>
+              <span class="badge badge-red">极端</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                3,873,127 / 5,912,422
+                
+              </div>
+              <span class="badge badge-yellow">看跌占优</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          30天平值隐含波动率约为 0.0%，整体水平偏偏低。 10%虚值看跌相对ATM贵 +6.2 波动点，反映下行保护需求。 10%虚值看涨相对ATM +6.2 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 3,873,127 张 vs 看跌 5,912,422 张）。
+        </div>
+      </section>
+      
+    </div>
+
+    <div class="disclaimer">
+      免责声明：本页面仅用于信息展示和教育目的，不构成任何投资建议或买卖任何证券及衍生品的要约或招揽。
+      所有数据为日终数据，可能存在延迟或错误。
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const select = document.getElementById('symbol-select');
+      const cards = document.querySelectorAll('.card[data-symbol]');
+
+      function updateVisibleCard() {
+        const value = select.value;
+        cards.forEach(card => {
+          if (card.dataset.symbol === value) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      select.addEventListener('change', updateVisibleCard);
+      updateVisibleCard();
+    })();
+  </script>
+</body>
+</html>

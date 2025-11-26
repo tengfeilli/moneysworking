@@ -1,0 +1,629 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>US Index Options Overview (EN)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 18px;   /* ★ 全局基础字号（原来是浏览器默认，约 16px） */
+    }
+
+    .page {
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .page-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-size: 15px;
+      color: #9ca3af;
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .symbol-picker {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      font-size: 12px;
+    }
+
+    .symbol-picker label {
+      color: #9ca3af;
+    }
+
+    .symbol-picker select {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #4b5563;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .symbol-picker select:focus {
+      border-color: #60a5fa;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .overview-table {
+  margin-bottom: 16px;
+  font-size: 12px;
+  border-radius: 12px;
+  border: 1px solid #1f2937;
+  overflow: hidden;
+}
+
+.overview-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.overview-table th,
+.overview-table td {
+  padding: 6px 10px;
+  text-align: right;
+}
+
+.overview-table th:first-child,
+.overview-table td:first-child {
+  text-align: left;
+}
+
+.overview-table thead {
+  background-color: #020617;
+  color: #9ca3af;
+}
+
+.overview-table tbody tr:nth-child(even) {
+  background-color: #020617;
+}
+
+.metric-change {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-left: 4px;
+}
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.25), transparent 55%),
+                  #020617;
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 14px 16px 16px;
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.6);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .symbol {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .symbol-sub {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .as-of {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 16px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 12px;
+    }
+
+    .metric-label {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .badge-green {
+      background-color: #16a34a;
+      color: #ecfdf3;
+    }
+
+    .badge-yellow {
+      background-color: #eab308;
+      color: #fefce8;
+    }
+
+    .badge-red {
+      background-color: #dc2626;
+      color: #fef2f2;
+    }
+
+    .badge-gray {
+      background-color: #4b5563;
+      color: #e5e7eb;
+    }
+
+    .comment {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #d1d5db;
+    }
+
+    .disclaimer {
+      margin-top: 28px;
+      font-size: 18px;
+      color: #6b7280;
+      border-top: 1px solid #1f2937;
+      padding-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <div class="page-header-top">
+        <div>
+          <div class="page-title">US Index Options Overview</div>
+          <div class="page-subtitle">
+            Latest end-of-day snapshot for key index option markets (30-day ATM IV, skew, and open interest).
+          </div>
+        </div>
+        <div class="symbol-picker">
+          <label for="symbol-select">Underlying</label>
+          <select id="symbol-select">
+            
+            <option value="SPX" selected>
+              SPX
+            </option>
+            
+            <option value="NDX" >
+              NDX
+            </option>
+            
+            <option value="SPY" >
+              SPY
+            </option>
+            
+            <option value="QQQ" >
+              QQQ
+            </option>
+            
+          </select>
+        </div>
+      </div>
+      <div class="tagline">
+        Data as of 2025-11-21 · Source: internal options database (Yahoo! underlying feed)
+      </div>
+    </header>
+
+      <div class="overview-table">
+  <table>
+    <thead>
+      <tr>
+        <th>Underlying</th>
+        <th>30d ATM IV</th>
+        <th>10% OTM Put Skew</th>
+        <th>10% OTM Call Skew</th>  <!-- ★ 新增列 -->
+        <th>Call/Put OI Ratio</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td>SPX</td>
+        <td>
+          23.2%
+          
+        </td>
+        <td>+4.8 vol pts</td>
+        <td>-7.8 vol pts</td>  <!-- ★ 新增单元格：10% OTM CALL Skew -->
+        <td>
+          0.71 (Balanced)
+          
+        </td>
+      </tr>
+      
+      <tr>
+        <td>NDX</td>
+        <td>
+          0.0%
+          
+        </td>
+        <td>+1.6 vol pts</td>
+        <td>+6.2 vol pts</td>  <!-- ★ 新增单元格：10% OTM CALL Skew -->
+        <td>
+          0.71 (Balanced)
+          
+        </td>
+      </tr>
+      
+      <tr>
+        <td>SPY</td>
+        <td>
+          0.0%
+          
+        </td>
+        <td>+6.2 vol pts</td>
+        <td>+6.2 vol pts</td>  <!-- ★ 新增单元格：10% OTM CALL Skew -->
+        <td>
+          0.46 (Put-heavy)
+          
+        </td>
+      </tr>
+      
+      <tr>
+        <td>QQQ</td>
+        <td>
+          0.0%
+          
+        </td>
+        <td>+6.2 vol pts</td>
+        <td>+6.2 vol pts</td>  <!-- ★ 新增单元格：10% OTM CALL Skew -->
+        <td>
+          0.66 (Put-heavy)
+          
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+
+    
+
+    <div class="card-grid">
+      
+      <section class="card" data-symbol="SPX" >
+        <div class="card-header">
+          <div>
+            <div class="symbol">SPX</div>
+            <div class="symbol-sub">
+  Underlying close: 6,602.99
+  
+  · 30d ATM IV: 23.2%
+</div>
+
+          </div>
+          <div class="as-of">Snapshot date: 2025-11-21</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+  <div class="metric-label">30d ATM IV</div>
+  <div class="metric-badge-row">
+    <div class="metric-value">
+      23.2%
+      
+    </div>
+    <span class="badge badge-yellow">Normal</span>
+  </div>
+</div>
+
+
+          <div class="metric">
+            <div class="metric-label">Skew (10% OTM Put vs ATM)</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+4.8 vol pts</div>
+              <span class="badge badge-yellow">Moderate</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew (10% OTM Call vs ATM)</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">-7.8 vol pts</div>
+              <span class="badge badge-red">Extreme</span>
+            </div>
+          </div>
+
+          <div class="metric">
+  <div class="metric-label">Total Call / Put OI</div>
+  <div class="metric-badge-row">
+    <div class="metric-value">
+      9,026,911 / 12,750,877
+      
+    </div>
+    <span class="badge badge-green">Balanced</span>
+  </div>
+</div>
+
+
+        <div class="comment">
+          30-day ATM implied volatility looks normal at 23.2%. 10% OTM puts trade about +4.8 vol pts relative to ATM, highlighting downside demand. 10% OTM calls trade about -7.8 vol pts versus ATM, capturing upside positioning. Overall call/put open interest looks balanced (9,026,911 calls vs 12,750,877 puts). The largest call wall sits near 6,000 (-9.1% from spot), while the largest put wall is near 6,000 (-9.1% from spot) within the 0–90 day expiries.
+        </div>
+      </section>
+      
+      <section class="card" data-symbol="NDX" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="symbol">NDX</div>
+            <div class="symbol-sub">
+  Underlying close: 24,239.57
+  
+  · 30d ATM IV: 0.0%
+</div>
+
+          </div>
+          <div class="as-of">Snapshot date: 2025-11-21</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+  <div class="metric-label">30d ATM IV</div>
+  <div class="metric-badge-row">
+    <div class="metric-value">
+      0.0%
+      
+    </div>
+    <span class="badge badge-green">Low</span>
+  </div>
+</div>
+
+
+          <div class="metric">
+            <div class="metric-label">Skew (10% OTM Put vs ATM)</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+1.6 vol pts</div>
+              <span class="badge badge-green">Mild</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew (10% OTM Call vs ATM)</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 vol pts</div>
+              <span class="badge badge-red">Extreme</span>
+            </div>
+          </div>
+
+          <div class="metric">
+  <div class="metric-label">Total Call / Put OI</div>
+  <div class="metric-badge-row">
+    <div class="metric-value">
+      64,625 / 91,493
+      
+    </div>
+    <span class="badge badge-green">Balanced</span>
+  </div>
+</div>
+
+
+        <div class="comment">
+          30-day ATM implied volatility looks low at 0.0%. 10% OTM puts trade about +1.6 vol pts relative to ATM, highlighting downside demand. 10% OTM calls trade about +6.2 vol pts versus ATM, capturing upside positioning. Overall call/put open interest looks balanced (64,625 calls vs 91,493 puts). The largest call wall sits near 24,500 (+1.1% from spot), while the largest put wall is near 21,000 (-13.4% from spot) within the 0–90 day expiries.
+        </div>
+      </section>
+      
+      <section class="card" data-symbol="SPY" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="symbol">SPY</div>
+            <div class="symbol-sub">
+  Underlying close: 659.03
+  
+  · 30d ATM IV: 0.0%
+</div>
+
+          </div>
+          <div class="as-of">Snapshot date: 2025-11-21</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+  <div class="metric-label">30d ATM IV</div>
+  <div class="metric-badge-row">
+    <div class="metric-value">
+      0.0%
+      
+    </div>
+    <span class="badge badge-green">Low</span>
+  </div>
+</div>
+
+
+          <div class="metric">
+            <div class="metric-label">Skew (10% OTM Put vs ATM)</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 vol pts</div>
+              <span class="badge badge-red">Extreme</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew (10% OTM Call vs ATM)</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 vol pts</div>
+              <span class="badge badge-red">Extreme</span>
+            </div>
+          </div>
+
+          <div class="metric">
+  <div class="metric-label">Total Call / Put OI</div>
+  <div class="metric-badge-row">
+    <div class="metric-value">
+      5,489,718 / 11,906,341
+      
+    </div>
+    <span class="badge badge-yellow">Put-heavy</span>
+  </div>
+</div>
+
+
+        <div class="comment">
+          30-day ATM implied volatility looks low at 0.0%. 10% OTM puts trade about +6.2 vol pts relative to ATM, highlighting downside demand. 10% OTM calls trade about +6.2 vol pts versus ATM, capturing upside positioning. Overall call/put open interest looks put-heavy (5,489,718 calls vs 11,906,341 puts). The largest call wall sits near 700 (+6.2% from spot), while the largest put wall is near 555 (-15.8% from spot) within the 0–90 day expiries.
+        </div>
+      </section>
+      
+      <section class="card" data-symbol="QQQ" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="symbol">QQQ</div>
+            <div class="symbol-sub">
+  Underlying close: 590.07
+  
+  · 30d ATM IV: 0.0%
+</div>
+
+          </div>
+          <div class="as-of">Snapshot date: 2025-11-21</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+  <div class="metric-label">30d ATM IV</div>
+  <div class="metric-badge-row">
+    <div class="metric-value">
+      0.0%
+      
+    </div>
+    <span class="badge badge-green">Low</span>
+  </div>
+</div>
+
+
+          <div class="metric">
+            <div class="metric-label">Skew (10% OTM Put vs ATM)</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 vol pts</div>
+              <span class="badge badge-red">Extreme</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew (10% OTM Call vs ATM)</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">+6.2 vol pts</div>
+              <span class="badge badge-red">Extreme</span>
+            </div>
+          </div>
+
+          <div class="metric">
+  <div class="metric-label">Total Call / Put OI</div>
+  <div class="metric-badge-row">
+    <div class="metric-value">
+      3,873,127 / 5,912,422
+      
+    </div>
+    <span class="badge badge-yellow">Put-heavy</span>
+  </div>
+</div>
+
+
+        <div class="comment">
+          30-day ATM implied volatility looks low at 0.0%. 10% OTM puts trade about +6.2 vol pts relative to ATM, highlighting downside demand. 10% OTM calls trade about +6.2 vol pts versus ATM, capturing upside positioning. Overall call/put open interest looks put-heavy (3,873,127 calls vs 5,912,422 puts). The largest call wall sits near 650 (+10.2% from spot), while the largest put wall is near 500 (-15.3% from spot) within the 0–90 day expiries.
+        </div>
+      </section>
+      
+    </div>
+
+    <div class="disclaimer">
+      Disclaimer: This page is provided for informational and educational purposes only and does not
+      constitute investment advice or a solicitation to buy or sell any securities or derivatives.
+      All data is end-of-day and may contain delays or errors.
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const select = document.getElementById('symbol-select');
+      const cards = document.querySelectorAll('.card[data-symbol]');
+
+      function updateVisibleCard() {
+        const value = select.value;
+        cards.forEach(card => {
+          if (card.dataset.symbol === value) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      select.addEventListener('change', updateVisibleCard);
+      // 初始化一次，保证默认只显示第一个（通常是 SPX）
+      updateVisibleCard();
+    })();
+  </script>
+</body>
+</html>
