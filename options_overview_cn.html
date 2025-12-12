@@ -1,0 +1,885 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>美股指数期权概览（中文）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 18px;
+    }
+
+    .page {
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .page-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .symbol-picker {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      font-size: 12px;
+    }
+
+    .symbol-picker label {
+      color: #9ca3af;
+    }
+
+    .symbol-picker select {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #4b5563;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .symbol-picker select:focus {
+      border-color: #60a5fa;
+    }
+
+    .overview-table {
+      margin-bottom: 16px;
+      font-size: 12px;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      overflow: hidden;
+    }
+
+    .overview-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .overview-table th,
+    .overview-table td {
+      padding: 6px 10px;
+      text-align: right;
+    }
+
+    .overview-table th:first-child,
+    .overview-table td:first-child {
+      text-align: left;
+    }
+
+    .overview-table thead {
+      background-color: #020617;
+      color: #9ca3af;
+    }
+
+    .overview-table tbody tr:nth-child(even) {
+      background-color: #020617;
+    }
+
+    .metric-change {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-left: 4px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.25), transparent 55%),
+                  #020617;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 14px 16px 16px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.55);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .symbol {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .symbol-sub {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .as-of {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 16px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 12px;
+    }
+
+    .metric-label {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      font-variant-numeric: tabular-nums;
+    }
+    /* 数字可点击查看历史 */
+    .history-trigger {
+      cursor: pointer;
+    }
+
+    .history-trigger:hover {
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+
+    /* 历史弹窗 */
+    .history-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      z-index: 40;
+    }
+
+    .history-panel {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      max-width: 880px;
+      width: calc(100% - 32px);
+      background-color: #020617;
+      border-radius: 12px;
+      border: 1px solid #4b5563;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+      padding: 12px 16px 16px;
+      z-index: 50;
+    }
+
+    .history-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .history-panel-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .history-panel-subtitle {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .history-close-btn {
+      border: none;
+      background: transparent;
+      color: #9ca3af;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 999px;
+      line-height: 1;
+    }
+
+    .history-close-btn:hover {
+      background-color: #111827;
+      color: #e5e7eb;
+    }
+
+    .history-panel-content {
+      max-height: 260px;
+      overflow: auto;
+      margin-top: 4px;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+
+    .history-table th,
+    .history-table td {
+      padding: 4px 8px;
+      text-align: right;
+      border-bottom: 1px solid #111827;
+      white-space: nowrap;
+    }
+
+    .history-table th:first-child,
+    .history-table td:first-child {
+      text-align: left;
+    }
+
+    .history-table thead {
+      position: sticky;
+      top: 0;
+      background-color: #020617;
+    }
+
+    .metric-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .badge-green {
+      background-color: #16a34a;
+      color: #ecfdf3;
+    }
+
+    .badge-yellow {
+      background-color: #eab308;
+      color: #fefce8;
+    }
+
+    .badge-red {
+      background-color: #dc2626;
+      color: #fef2f2;
+    }
+
+    .badge-gray {
+      background-color: #4b5563;
+      color: #e5e7eb;
+    }
+
+    .comment {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #d1d5db;
+    }
+
+    .disclaimer {
+      margin-top: 28px;
+      font-size: 22px;
+      color: #6b7280;
+      border-top: 1px solid #1f2937;
+      padding-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <div class="page-header-top">
+        <div>
+          <div class="page-title">美股指数期权概览</div>
+          <div class="page-subtitle">
+            基于期权市场的日终快照（30天平值隐含波动率、10%虚值 Skew、看涨/看跌持仓比）。
+          </div>
+        </div>
+        <div class="symbol-picker">
+          <label for="symbol-select">标的</label>
+          <select id="symbol-select">
+            
+            <option value="SPX" selected>
+              SPX
+            </option>
+            
+            <option value="NDX" >
+              NDX
+            </option>
+            
+            <option value="SPY" >
+              SPY
+            </option>
+            
+            <option value="QQQ" >
+              QQQ
+            </option>
+            
+          </select>
+        </div>
+      </div>
+      <div class="tagline">
+        数据日期：2025-12-10 · 数据来源：内部期权数据库（标的价格来自 Yahoo!）
+      </div>
+    </header>
+
+    <div class="overview-table">
+      <table>
+        <thead>
+          <tr>
+            <th>标的</th>
+            <th>30天ATM隐含波动率</th>
+            <th>10%虚值看跌 Skew</th>
+            <th>10%虚值看涨 Skew</th>
+            <th>看涨/看跌持仓比</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>SPX</td>
+            <td class="history-trigger" data-symbol="SPX">
+  14.7%
+  
+    <span class="metric-change">-0.4 波动点</span>
+  
+</td>
+<td class="history-trigger" data-symbol="SPX">
+  +7.5 波动点
+</td>
+<td class="history-trigger" data-symbol="SPX">
+  -1.4 波动点
+</td>
+<td class="history-trigger" data-symbol="SPX">
+  0.69（看跌占优）
+  
+    <span class="metric-change">+0.00</span>
+  
+</td>
+
+          </tr>
+          
+          <tr>
+            <td>NDX</td>
+            <td class="history-trigger" data-symbol="NDX">
+  19.6%
+  
+    <span class="metric-change">+0.4 波动点</span>
+  
+</td>
+<td class="history-trigger" data-symbol="NDX">
+  +4.8 波动点
+</td>
+<td class="history-trigger" data-symbol="NDX">
+  -3.9 波动点
+</td>
+<td class="history-trigger" data-symbol="NDX">
+  0.72（平衡）
+  
+    <span class="metric-change">-0.01</span>
+  
+</td>
+
+          </tr>
+          
+          <tr>
+            <td>SPY</td>
+            <td class="history-trigger" data-symbol="SPY">
+  14.0%
+  
+    <span class="metric-change">-0.3 波动点</span>
+  
+</td>
+<td class="history-trigger" data-symbol="SPY">
+  +8.1 波动点
+</td>
+<td class="history-trigger" data-symbol="SPY">
+  -1.0 波动点
+</td>
+<td class="history-trigger" data-symbol="SPY">
+  0.50（看跌占优）
+  
+    <span class="metric-change">-0.01</span>
+  
+</td>
+
+          </tr>
+          
+          <tr>
+            <td>QQQ</td>
+            <td class="history-trigger" data-symbol="QQQ">
+  19.0%
+  
+    <span class="metric-change">-0.1 波动点</span>
+  
+</td>
+<td class="history-trigger" data-symbol="QQQ">
+  +5.6 波动点
+</td>
+<td class="history-trigger" data-symbol="QQQ">
+  -3.2 波动点
+</td>
+<td class="history-trigger" data-symbol="QQQ">
+  0.65（看跌占优）
+  
+    <span class="metric-change">-0.00</span>
+  
+</td>
+
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-grid">
+      
+      <section class="card" data-symbol="SPX" >
+        <div class="card-header">
+          <div>
+            <div class="symbol">SPX</div>
+            <div class="symbol-sub">
+              标的收盘价：6,889.70
+              
+                （日变动 +0.73%）
+              
+              · 30天ATM IV：14.7%
+            </div>
+          </div>
+          <div class="as-of">快照日期：2025-12-10</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">30天ATM隐含波动率</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPX">
+  14.7%
+  
+    <span class="metric-change">-0.4 波动点</span>
+  
+</div>
+
+              <span class="badge badge-green">偏低</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPX">
+  +7.5 波动点
+</div>
+
+              <span class="badge badge-red">极端</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPX">
+  -1.4 波动点
+</div>
+
+              <span class="badge badge-green">温和</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPX">
+  7,740,461 / 11,246,902
+  
+    <span class="metric-change">+0.00</span>
+  
+</div>
+
+              <span class="badge badge-yellow">看跌占优</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          30天平值隐含波动率约为 14.7%，整体水平偏低。 较前一交易日变动 -0.4 波动点。 10%虚值看跌相对ATM贵 +7.5 波动点，反映下行保护需求。 10%虚值看涨相对ATM -1.4 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 7,740,461 张 vs 看跌 11,246,902 张）。 看涨/看跌持仓比较前一日变动 +0.00。 波动率偏低，整体风险偏好尚可；10%虚值看跌溢价明显，下档保护需求强；10%虚值看涨不贵，上档追涨意愿有限；看跌持仓占优。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
+        </div>
+      </section>
+      
+      <section class="card" data-symbol="NDX" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="symbol">NDX</div>
+            <div class="symbol-sub">
+              标的收盘价：25,776.44
+              
+                （日变动 +0.42%）
+              
+              · 30天ATM IV：19.6%
+            </div>
+          </div>
+          <div class="as-of">快照日期：2025-12-10</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">30天ATM隐含波动率</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="NDX">
+  19.6%
+  
+    <span class="metric-change">+0.4 波动点</span>
+  
+</div>
+
+              <span class="badge badge-yellow">正常</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="NDX">
+  +4.8 波动点
+</div>
+
+              <span class="badge badge-yellow">中性</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="NDX">
+  -3.9 波动点
+</div>
+
+              <span class="badge badge-yellow">中性</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="NDX">
+  65,821 / 92,004
+  
+    <span class="metric-change">-0.01</span>
+  
+</div>
+
+              <span class="badge badge-green">平衡</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          30天平值隐含波动率约为 19.6%，整体水平正常。 较前一交易日变动 +0.4 波动点。 10%虚值看跌相对ATM贵 +4.8 波动点，反映下行保护需求。 10%虚值看涨相对ATM -3.9 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏平衡（看涨 65,821 张 vs 看跌 92,004 张）。 看涨/看跌持仓比较前一日变动 -0.01。 10%虚值看跌略贵，存在一定防守需求；10%虚值看涨不贵，上档追涨意愿有限。 综合期权结构，短线情绪判断为：整体中性。整体情绪中性，以观望或轻仓应对更为稳妥，可配合宽度与技术面寻找更明确的进出场信号。
+        </div>
+      </section>
+      
+      <section class="card" data-symbol="SPY" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="symbol">SPY</div>
+            <div class="symbol-sub">
+              标的收盘价：687.50
+              
+                （日变动 +0.65%）
+              
+              · 30天ATM IV：14.0%
+            </div>
+          </div>
+          <div class="as-of">快照日期：2025-12-10</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">30天ATM隐含波动率</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPY">
+  14.0%
+  
+    <span class="metric-change">-0.3 波动点</span>
+  
+</div>
+
+              <span class="badge badge-green">偏低</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPY">
+  +8.1 波动点
+</div>
+
+              <span class="badge badge-red">极端</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPY">
+  -1.0 波动点
+</div>
+
+              <span class="badge badge-green">温和</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPY">
+  5,635,786 / 11,338,152
+  
+    <span class="metric-change">-0.01</span>
+  
+</div>
+
+              <span class="badge badge-yellow">看跌占优</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          30天平值隐含波动率约为 14.0%，整体水平偏低。 较前一交易日变动 -0.3 波动点。 10%虚值看跌相对ATM贵 +8.1 波动点，反映下行保护需求。 10%虚值看涨相对ATM -1.0 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 5,635,786 张 vs 看跌 11,338,152 张）。 看涨/看跌持仓比较前一日变动 -0.01。 波动率偏低，整体风险偏好尚可；10%虚值看跌溢价明显，下档保护需求强；10%虚值看涨不贵，上档追涨意愿有限；看跌持仓占优。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
+        </div>
+      </section>
+      
+      <section class="card" data-symbol="QQQ" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="symbol">QQQ</div>
+            <div class="symbol-sub">
+              标的收盘价：627.61
+              
+                （日变动 +0.41%）
+              
+              · 30天ATM IV：19.0%
+            </div>
+          </div>
+          <div class="as-of">快照日期：2025-12-10</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">30天ATM隐含波动率</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="QQQ">
+  19.0%
+  
+    <span class="metric-change">-0.1 波动点</span>
+  
+</div>
+
+              <span class="badge badge-yellow">正常</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="QQQ">
+  +5.6 波动点
+</div>
+
+              <span class="badge badge-red">极端</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="QQQ">
+  -3.2 波动点
+</div>
+
+              <span class="badge badge-yellow">中性</span>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="QQQ">
+  4,218,159 / 6,527,448
+  
+    <span class="metric-change">-0.00</span>
+  
+</div>
+
+              <span class="badge badge-yellow">看跌占优</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          30天平值隐含波动率约为 19.0%，整体水平正常。 较前一交易日变动 -0.1 波动点。 10%虚值看跌相对ATM贵 +5.6 波动点，反映下行保护需求。 10%虚值看涨相对ATM -3.2 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 4,218,159 张 vs 看跌 6,527,448 张）。 看涨/看跌持仓比较前一日变动 -0.00。 10%虚值看跌溢价明显，下档保护需求强；10%虚值看涨不贵，上档追涨意愿有限；看跌持仓占优。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
+        </div>
+      </section>
+      
+    </div>
+
+        <div class="disclaimer">
+      免责声明：本页面仅用于信息展示和教育目的，不构成任何投资建议或买卖任何证券及衍生品的要约或招揽。
+      所有数据为日终数据，可能存在延迟或错误。
+    </div>
+  </div>
+
+  <!-- 历史弹窗 -->
+  <div id="history-backdrop" class="history-backdrop" style="display:none;"></div>
+  <div id="history-panel" class="history-panel" style="display:none;">
+    <div class="history-panel-header">
+      <div>
+        <div class="history-panel-title" id="history-title"></div>
+        <div class="history-panel-subtitle" id="history-subtitle"></div>
+      </div>
+      <button id="history-close" class="history-close-btn">&times;</button>
+    </div>
+    <div class="history-panel-content">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>30天ATM IV</th>
+            <th>10%虚值看跌 Skew</th>
+            <th>10%虚值看涨 Skew</th>
+            <th>Call/Put 持仓比</th>
+          </tr>
+        </thead>
+        <tbody id="history-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const HISTORY = {"SPX": [{"date": "2025-11-18", "atm_iv_pct": "18.0%", "skew_down_bp": "+13.5 波动点", "skew_up_bp": "-4.0 波动点", "cpr_brief": "0.63（看跌占优）"}, {"date": "2025-11-19", "atm_iv_pct": "25.6%", "skew_down_bp": "+0.8 波动点", "skew_up_bp": "-10.0 波动点", "cpr_brief": "0.66（看跌占优）"}, {"date": "2025-11-20", "atm_iv_pct": "23.2%", "skew_down_bp": "+7.6 波动点", "skew_up_bp": "-7.5 波动点", "cpr_brief": "0.65（看跌占优）"}, {"date": "2025-11-21", "atm_iv_pct": "13.1%", "skew_down_bp": "+17.0 波动点", "skew_up_bp": "+1.6 波动点", "cpr_brief": "0.65（看跌占优）"}, {"date": "2025-11-24", "atm_iv_pct": "17.5%", "skew_down_bp": "+9.5 波动点", "skew_up_bp": "-4.7 波动点", "cpr_brief": "0.66（看跌占优）"}, {"date": "2025-11-25", "atm_iv_pct": "15.2%", "skew_down_bp": "+9.4 波动点", "skew_up_bp": "-1.3 波动点", "cpr_brief": "0.67（看跌占优）"}, {"date": "2025-11-26", "atm_iv_pct": "14.6%", "skew_down_bp": "+8.8 波动点", "skew_up_bp": "-1.0 波动点", "cpr_brief": "0.63（看跌占优）"}, {"date": "2025-11-28", "atm_iv_pct": "13.9%", "skew_down_bp": "+8.1 波动点", "skew_up_bp": "+0.3 波动点", "cpr_brief": "0.67（看跌占优）"}, {"date": "2025-12-01", "atm_iv_pct": "15.3%", "skew_down_bp": "+8.1 波动点", "skew_up_bp": "-1.6 波动点", "cpr_brief": "0.68（看跌占优）"}, {"date": "2025-12-02", "atm_iv_pct": "15.2%", "skew_down_bp": "+7.8 波动点", "skew_up_bp": "-1.7 波动点", "cpr_brief": "0.68（看跌占优）"}, {"date": "2025-12-03", "atm_iv_pct": "14.9%", "skew_down_bp": "+7.4 波动点", "skew_up_bp": "-2.3 波动点", "cpr_brief": "0.68（看跌占优）"}, {"date": "2025-12-04", "atm_iv_pct": "13.9%", "skew_down_bp": "+8.6 波动点", "skew_up_bp": "-1.5 波动点", "cpr_brief": "0.69（看跌占优）"}, {"date": "2025-12-05", "atm_iv_pct": "13.9%", "skew_down_bp": "+7.1 波动点", "skew_up_bp": "-1.0 波动点", "cpr_brief": "0.72（平衡）"}, {"date": "2025-12-08", "atm_iv_pct": "14.6%", "skew_down_bp": "+7.9 波动点", "skew_up_bp": "-1.7 波动点", "cpr_brief": "0.69（看跌占优）"}, {"date": "2025-12-09", "atm_iv_pct": "15.1%", "skew_down_bp": "+7.8 波动点", "skew_up_bp": "-2.1 波动点", "cpr_brief": "0.69（看跌占优）"}, {"date": "2025-12-10", "atm_iv_pct": "14.7%", "skew_down_bp": "+7.5 波动点", "skew_up_bp": "-1.4 波动点", "cpr_brief": "0.69（看跌占优）"}], "NDX": [{"date": "2025-11-18", "atm_iv_pct": "22.4%", "skew_down_bp": "+12.0 波动点", "skew_up_bp": "-3.5 波动点", "cpr_brief": "0.48（看跌占优）"}, {"date": "2025-11-19", "atm_iv_pct": "27.0%", "skew_down_bp": "+6.8 波动点", "skew_up_bp": "-6.9 波动点", "cpr_brief": "0.56（看跌占优）"}, {"date": "2025-11-20", "atm_iv_pct": "30.2%", "skew_down_bp": "+8.2 波动点", "skew_up_bp": "-8.6 波动点", "cpr_brief": "0.57（看跌占优）"}, {"date": "2025-11-21", "atm_iv_pct": "28.7%", "skew_down_bp": "+6.3 波动点", "skew_up_bp": "-7.8 波动点", "cpr_brief": "0.66（看跌占优）"}, {"date": "2025-11-24", "atm_iv_pct": "24.0%", "skew_down_bp": "+7.5 波动点", "skew_up_bp": "-5.3 波动点", "cpr_brief": "0.66（看跌占优）"}, {"date": "2025-11-26", "atm_iv_pct": "20.2%", "skew_down_bp": "N/A", "skew_up_bp": "+0.0 波动点", "cpr_brief": "0.71（平衡）"}, {"date": "2025-11-28", "atm_iv_pct": "18.5%", "skew_down_bp": "+5.6 波动点", "skew_up_bp": "-1.6 波动点", "cpr_brief": "0.72（平衡）"}, {"date": "2025-12-01", "atm_iv_pct": "20.3%", "skew_down_bp": "+6.5 波动点", "skew_up_bp": "-3.2 波动点", "cpr_brief": "0.71（平衡）"}, {"date": "2025-12-02", "atm_iv_pct": "20.1%", "skew_down_bp": "+6.2 波动点", "skew_up_bp": "-3.3 波动点", "cpr_brief": "0.71（平衡）"}, {"date": "2025-12-03", "atm_iv_pct": "19.9%", "skew_down_bp": "+5.7 波动点", "skew_up_bp": "-3.8 波动点", "cpr_brief": "0.63（看跌占优）"}, {"date": "2025-12-04", "atm_iv_pct": "18.3%", "skew_down_bp": "+7.3 波动点", "skew_up_bp": "-2.6 波动点", "cpr_brief": "0.63（看跌占优）"}, {"date": "2025-12-05", "atm_iv_pct": "17.8%", "skew_down_bp": "-3.5 波动点", "skew_up_bp": "-1.3 波动点", "cpr_brief": "0.66（看跌占优）"}, {"date": "2025-12-08", "atm_iv_pct": "18.3%", "skew_down_bp": "+4.2 波动点", "skew_up_bp": "-3.1 波动点", "cpr_brief": "0.75（平衡）"}, {"date": "2025-12-09", "atm_iv_pct": "19.2%", "skew_down_bp": "+2.6 波动点", "skew_up_bp": "-3.6 波动点", "cpr_brief": "0.73（平衡）"}, {"date": "2025-12-10", "atm_iv_pct": "19.6%", "skew_down_bp": "+4.8 波动点", "skew_up_bp": "-3.9 波动点", "cpr_brief": "0.72（平衡）"}], "SPY": [{"date": "2025-11-18", "atm_iv_pct": "17.3%", "skew_down_bp": "+12.7 波动点", "skew_up_bp": "-2.4 波动点", "cpr_brief": "0.36（看跌占优）"}, {"date": "2025-11-19", "atm_iv_pct": "20.9%", "skew_down_bp": "+9.1 波动点", "skew_up_bp": "-5.6 波动点", "cpr_brief": "0.44（看跌占优）"}, {"date": "2025-11-20", "atm_iv_pct": "23.3%", "skew_down_bp": "+9.2 波动点", "skew_up_bp": "-7.6 波动点", "cpr_brief": "0.44（看跌占优）"}, {"date": "2025-11-21", "atm_iv_pct": "21.9%", "skew_down_bp": "+8.9 波动点", "skew_up_bp": "-6.3 波动点", "cpr_brief": "0.46（看跌占优）"}, {"date": "2025-11-24", "atm_iv_pct": "17.4%", "skew_down_bp": "+9.2 波动点", "skew_up_bp": "-3.5 波动点", "cpr_brief": "0.46（看跌占优）"}, {"date": "2025-11-25", "atm_iv_pct": "15.5%", "skew_down_bp": "+9.6 波动点", "skew_up_bp": "-2.0 波动点", "cpr_brief": "0.45（看跌占优）"}, {"date": "2025-11-26", "atm_iv_pct": "15.1%", "skew_down_bp": "+8.8 波动点", "skew_up_bp": "-1.0 波动点", "cpr_brief": "0.44（看跌占优）"}, {"date": "2025-11-28", "atm_iv_pct": "13.4%", "skew_down_bp": "+9.8 波动点", "skew_up_bp": "+0.5 波动点", "cpr_brief": "0.44（看跌占优）"}, {"date": "2025-12-01", "atm_iv_pct": "14.1%", "skew_down_bp": "+9.7 波动点", "skew_up_bp": "+0.1 波动点", "cpr_brief": "0.46（看跌占优）"}, {"date": "2025-12-02", "atm_iv_pct": "14.5%", "skew_down_bp": "+8.7 波动点", "skew_up_bp": "-0.5 波动点", "cpr_brief": "0.47（看跌占优）"}, {"date": "2025-12-03", "atm_iv_pct": "13.8%", "skew_down_bp": "+8.9 波动点", "skew_up_bp": "-0.7 波动点", "cpr_brief": "0.47（看跌占优）"}, {"date": "2025-12-04", "atm_iv_pct": "12.4%", "skew_down_bp": "+10.6 波动点", "skew_up_bp": "+1.0 波动点", "cpr_brief": "0.46（看跌占优）"}, {"date": "2025-12-05", "atm_iv_pct": "12.6%", "skew_down_bp": "+10.0 波动点", "skew_up_bp": "+0.9 波动点", "cpr_brief": "0.46（看跌占优）"}, {"date": "2025-12-08", "atm_iv_pct": "13.2%", "skew_down_bp": "+10.0 波动点", "skew_up_bp": "-0.3 波动点", "cpr_brief": "0.50（看跌占优）"}, {"date": "2025-12-09", "atm_iv_pct": "14.3%", "skew_down_bp": "+8.7 波动点", "skew_up_bp": "-1.1 波动点", "cpr_brief": "0.50（看跌占优）"}, {"date": "2025-12-10", "atm_iv_pct": "14.0%", "skew_down_bp": "+8.1 波动点", "skew_up_bp": "-1.0 波动点", "cpr_brief": "0.50（看跌占优）"}], "QQQ": [{"date": "2025-11-18", "atm_iv_pct": "23.4%", "skew_down_bp": "+11.3 波动点", "skew_up_bp": "-4.3 波动点", "cpr_brief": "0.64（看跌占优）"}, {"date": "2025-11-19", "atm_iv_pct": "27.6%", "skew_down_bp": "+6.7 波动点", "skew_up_bp": "-7.2 波动点", "cpr_brief": "0.62（看跌占优）"}, {"date": "2025-11-20", "atm_iv_pct": "30.6%", "skew_down_bp": "+7.4 波动点", "skew_up_bp": "-8.5 波动点", "cpr_brief": "0.64（看跌占优）"}, {"date": "2025-11-21", "atm_iv_pct": "29.3%", "skew_down_bp": "+7.0 波动点", "skew_up_bp": "-7.9 波动点", "cpr_brief": "0.65（看跌占优）"}, {"date": "2025-11-24", "atm_iv_pct": "23.5%", "skew_down_bp": "+6.7 波动点", "skew_up_bp": "-5.5 波动点", "cpr_brief": "0.66（看跌占优）"}, {"date": "2025-11-25", "atm_iv_pct": "21.1%", "skew_down_bp": "+6.9 波动点", "skew_up_bp": "-3.9 波动点", "cpr_brief": "0.67（看跌占优）"}, {"date": "2025-11-26", "atm_iv_pct": "17.7%", "skew_down_bp": "+8.8 波动点", "skew_up_bp": "-1.0 波动点", "cpr_brief": "0.68（看跌占优）"}, {"date": "2025-11-28", "atm_iv_pct": "19.1%", "skew_down_bp": "+7.6 波动点", "skew_up_bp": "-2.7 波动点", "cpr_brief": "0.67（看跌占优）"}, {"date": "2025-12-01", "atm_iv_pct": "19.8%", "skew_down_bp": "+7.4 波动点", "skew_up_bp": "-2.6 波动点", "cpr_brief": "0.68（看跌占优）"}, {"date": "2025-12-02", "atm_iv_pct": "19.7%", "skew_down_bp": "+6.7 波动点", "skew_up_bp": "-2.9 波动点", "cpr_brief": "0.67（看跌占优）"}, {"date": "2025-12-03", "atm_iv_pct": "19.2%", "skew_down_bp": "+6.6 波动点", "skew_up_bp": "-3.1 波动点", "cpr_brief": "0.66（看跌占优）"}, {"date": "2025-12-04", "atm_iv_pct": "17.4%", "skew_down_bp": "+8.4 波动点", "skew_up_bp": "-1.7 波动点", "cpr_brief": "0.65（看跌占优）"}, {"date": "2025-12-05", "atm_iv_pct": "17.7%", "skew_down_bp": "+6.8 波动点", "skew_up_bp": "-1.8 波动点", "cpr_brief": "0.65（看跌占优）"}, {"date": "2025-12-08", "atm_iv_pct": "18.2%", "skew_down_bp": "+8.2 波动点", "skew_up_bp": "-2.2 波动点", "cpr_brief": "0.65（看跌占优）"}, {"date": "2025-12-09", "atm_iv_pct": "19.1%", "skew_down_bp": "+6.2 波动点", "skew_up_bp": "-2.7 波动点", "cpr_brief": "0.65（看跌占优）"}, {"date": "2025-12-10", "atm_iv_pct": "19.0%", "skew_down_bp": "+5.6 波动点", "skew_up_bp": "-3.2 波动点", "cpr_brief": "0.65（看跌占优）"}]};
+
+    (function () {
+      const select = document.getElementById('symbol-select');
+      const cards = document.querySelectorAll('.card[data-symbol]');
+
+      const backdrop = document.getElementById('history-backdrop');
+      const panel = document.getElementById('history-panel');
+      const titleEl = document.getElementById('history-title');
+      const subtitleEl = document.getElementById('history-subtitle');
+      const tbody = document.getElementById('history-tbody');
+      const closeBtn = document.getElementById('history-close');
+
+      function updateVisibleCard() {
+        const value = select.value;
+        cards.forEach(card => {
+          if (card.dataset.symbol === value) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      function openHistory(symbol) {
+        const rows = (HISTORY && HISTORY[symbol]) || [];
+        titleEl.textContent = symbol + ' 期权历史概览';
+        subtitleEl.textContent = '最近 ' + rows.length + ' 个交易日：30天ATM IV · Skew · Call/Put 持仓比';
+
+        tbody.innerHTML = rows.map(r => `
+          <tr>
+            <td>${r.date}</td>
+            <td>${r.atm_iv_pct || '-'}</td>
+            <td>${r.skew_down_bp || '-'}</td>
+            <td>${r.skew_up_bp || '-'}</td>
+            <td>${r.cpr_brief || '-'}</td>
+          </tr>
+        `).join('');
+
+        backdrop.style.display = 'block';
+        panel.style.display = 'block';
+      }
+
+      function closeHistory() {
+        backdrop.style.display = 'none';
+        panel.style.display = 'none';
+      }
+
+      const triggers = document.querySelectorAll('.history-trigger');
+      triggers.forEach(el => {
+        el.addEventListener('click', () => {
+          const symbol = el.dataset.symbol;
+          if (symbol) {
+            openHistory(symbol);
+          }
+        });
+      });
+
+      backdrop.addEventListener('click', closeHistory);
+      closeBtn.addEventListener('click', closeHistory);
+      document.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape') {
+          closeHistory();
+        }
+      });
+
+      if (select) {
+        select.addEventListener('change', updateVisibleCard);
+      }
+      updateVisibleCard();
+    })();
+  </script>
+</body>
+</html>
