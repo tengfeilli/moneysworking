@@ -188,6 +188,14 @@
       font-size: 16px;
       font-variant-numeric: tabular-nums;
     }
+
+    .metric-sub {
+      margin-top: 2px;
+      font-size: 11px;
+      color: #9ca3af;
+      font-variant-numeric: tabular-nums;
+    }
+
     /* 数字可点击查看历史 */
     .history-trigger {
       cursor: pointer;
@@ -375,7 +383,7 @@
       </div>
     </header>
 
-    <div class="overview-table">
+        <div class="overview-table">
       <table>
         <thead>
           <tr>
@@ -384,105 +392,188 @@
             <th>10%虚值看跌 Skew</th>
             <th>10%虚值看涨 Skew</th>
             <th>看涨/看跌持仓比</th>
+            <th>C/P 成交比</th>
+            <th>期限结构斜率</th>
           </tr>
         </thead>
         <tbody>
           
           <tr>
             <td>SPX</td>
-            <td class="history-trigger" data-symbol="SPX">
-  13.0%
-  
-    <span class="metric-change">-1.7 波动点</span>
-  
-</td>
-<td class="history-trigger" data-symbol="SPX">
-  +9.2 波动点
-</td>
-<td class="history-trigger" data-symbol="SPX">
-  +0.0 波动点
-</td>
-<td class="history-trigger" data-symbol="SPX">
-  0.69（看跌占优）
-  
-    <span class="metric-change">+0.00</span>
-  
-</td>
 
+            <!-- 30D ATM IV -->
+            <td class="history-trigger" data-symbol="SPX">
+              13.0%
+              
+                <span class="metric-change">-1.7 波动点</span>
+              
+            </td>
+
+            <!-- Skew down -->
+            <td class="history-trigger" data-symbol="SPX">
+              +9.2 波动点
+            </td>
+
+            <!-- Skew up -->
+            <td class="history-trigger" data-symbol="SPX">
+              +0.0 波动点
+            </td>
+
+            <!-- CPR（持仓结构） -->
+            <td class="history-trigger" data-symbol="SPX">
+              0.69（看跌占优）
+              
+                <span class="metric-change">+0.00</span>
+              
+            </td>
+
+            <!-- 当日 C/P 成交比 -->
+            <td class="history-trigger" data-symbol="SPX">
+              0.83（平衡）
+              
+                <span class="metric-change">+0.01</span>
+              
+            </td>
+
+            <!-- 期限结构斜率（30–90 vs 0–30） -->
+            <td class="history-trigger" data-symbol="SPX">
+              +1.3 波动点
+            </td>
           </tr>
           
           <tr>
             <td>NDX</td>
-            <td class="history-trigger" data-symbol="NDX">
-  18.1%
-  
-    <span class="metric-change">-1.5 波动点</span>
-  
-</td>
-<td class="history-trigger" data-symbol="NDX">
-  +6.6 波动点
-</td>
-<td class="history-trigger" data-symbol="NDX">
-  -2.7 波动点
-</td>
-<td class="history-trigger" data-symbol="NDX">
-  0.70（平衡）
-  
-    <span class="metric-change">-0.01</span>
-  
-</td>
 
+            <!-- 30D ATM IV -->
+            <td class="history-trigger" data-symbol="NDX">
+              18.1%
+              
+                <span class="metric-change">-1.5 波动点</span>
+              
+            </td>
+
+            <!-- Skew down -->
+            <td class="history-trigger" data-symbol="NDX">
+              +6.6 波动点
+            </td>
+
+            <!-- Skew up -->
+            <td class="history-trigger" data-symbol="NDX">
+              -2.7 波动点
+            </td>
+
+            <!-- CPR（持仓结构） -->
+            <td class="history-trigger" data-symbol="NDX">
+              0.70（平衡）
+              
+                <span class="metric-change">-0.01</span>
+              
+            </td>
+
+            <!-- 当日 C/P 成交比 -->
+            <td class="history-trigger" data-symbol="NDX">
+              1.31（看涨占优）
+              
+                <span class="metric-change">+0.47</span>
+              
+            </td>
+
+            <!-- 期限结构斜率（30–90 vs 0–30） -->
+            <td class="history-trigger" data-symbol="NDX">
+              +1.6 波动点
+            </td>
           </tr>
           
           <tr>
             <td>SPY</td>
-            <td class="history-trigger" data-symbol="SPY">
-  11.6%
-  
-    <span class="metric-change">-2.4 波动点</span>
-  
-</td>
-<td class="history-trigger" data-symbol="SPY">
-  +10.8 波动点
-</td>
-<td class="history-trigger" data-symbol="SPY">
-  +1.9 波动点
-</td>
-<td class="history-trigger" data-symbol="SPY">
-  0.49（看跌占优）
-  
-    <span class="metric-change">-0.00</span>
-  
-</td>
 
+            <!-- 30D ATM IV -->
+            <td class="history-trigger" data-symbol="SPY">
+              11.6%
+              
+                <span class="metric-change">-2.4 波动点</span>
+              
+            </td>
+
+            <!-- Skew down -->
+            <td class="history-trigger" data-symbol="SPY">
+              +10.8 波动点
+            </td>
+
+            <!-- Skew up -->
+            <td class="history-trigger" data-symbol="SPY">
+              +1.9 波动点
+            </td>
+
+            <!-- CPR（持仓结构） -->
+            <td class="history-trigger" data-symbol="SPY">
+              0.49（看跌占优）
+              
+                <span class="metric-change">-0.00</span>
+              
+            </td>
+
+            <!-- 当日 C/P 成交比 -->
+            <td class="history-trigger" data-symbol="SPY">
+              0.95（平衡）
+              
+                <span class="metric-change">+0.11</span>
+              
+            </td>
+
+            <!-- 期限结构斜率（30–90 vs 0–30） -->
+            <td class="history-trigger" data-symbol="SPY">
+              +2.2 波动点
+            </td>
           </tr>
           
           <tr>
             <td>QQQ</td>
-            <td class="history-trigger" data-symbol="QQQ">
-  16.7%
-  
-    <span class="metric-change">-2.4 波动点</span>
-  
-</td>
-<td class="history-trigger" data-symbol="QQQ">
-  +7.9 波动点
-</td>
-<td class="history-trigger" data-symbol="QQQ">
-  -1.2 波动点
-</td>
-<td class="history-trigger" data-symbol="QQQ">
-  0.64（看跌占优）
-  
-    <span class="metric-change">-0.01</span>
-  
-</td>
 
+            <!-- 30D ATM IV -->
+            <td class="history-trigger" data-symbol="QQQ">
+              16.7%
+              
+                <span class="metric-change">-2.4 波动点</span>
+              
+            </td>
+
+            <!-- Skew down -->
+            <td class="history-trigger" data-symbol="QQQ">
+              +7.9 波动点
+            </td>
+
+            <!-- Skew up -->
+            <td class="history-trigger" data-symbol="QQQ">
+              -1.2 波动点
+            </td>
+
+            <!-- CPR（持仓结构） -->
+            <td class="history-trigger" data-symbol="QQQ">
+              0.64（看跌占优）
+              
+                <span class="metric-change">-0.01</span>
+              
+            </td>
+
+            <!-- 当日 C/P 成交比 -->
+            <td class="history-trigger" data-symbol="QQQ">
+              1.08（平衡）
+              
+                <span class="metric-change">+0.06</span>
+              
+            </td>
+
+            <!-- 期限结构斜率（30–90 vs 0–30） -->
+            <td class="history-trigger" data-symbol="QQQ">
+              +2.7 波动点
+            </td>
           </tr>
           
         </tbody>
       </table>
     </div>
+
 
     <div class="card-grid">
       
@@ -501,31 +592,88 @@
           <div class="as-of">快照日期：2025-12-11</div>
         </div>
 
-        <div class="metric-grid">
+                <div class="metric-grid">
+          <!-- 30D ATM IV -->
           <div class="metric">
             <div class="metric-label">30天ATM隐含波动率</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger" data-symbol="SPX">
-  13.0%
-  
-    <span class="metric-change">-1.7 波动点</span>
-  
-</div>
-
+                13.0%
+                
+                  <span class="metric-change">-1.7 波动点</span>
+                
+              </div>
               <span class="badge badge-green">偏低</span>
+            </div>
+            <div class="metric-sub">
+              5/10日均：14.1% / 14.4%
             </div>
           </div>
 
+
+          <!-- Skew：10% OTM Put -->
           <div class="metric">
             <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger" data-symbol="SPX">
-  +9.2 波动点
-</div>
-
+                +9.2 波动点
+              </div>
               <span class="badge badge-red">极端</span>
             </div>
           </div>
+
+          <!-- Skew：10% OTM Call -->
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPX">
+                +0.0 波动点
+              </div>
+              <span class="badge badge-green">温和</span>
+            </div>
+          </div>
+
+          <!-- 总持仓 CPR -->
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPX">
+                7,812,734 / 11,342,079
+                
+                  <span class="metric-change">+0.00</span>
+                
+              </div>
+              <span class="badge badge-yellow">看跌占优</span>
+            </div>
+          </div>
+
+          <!-- 期限结构：0–30 vs 30–90 -->
+          <div class="metric">
+            <div class="metric-label">期限结构：0–30天 vs 30–90天</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                12.7% / 13.9%
+              </div>
+              <span class="badge ">
+                +1.3 波动点
+              </span>
+            </div>
+          </div>
+
+          <!-- 当日成交：Call / Put -->
+          <div class="metric">
+            <div class="metric-label">当日成交：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                1,832,789 / 2,200,343
+              </div>
+              <span class="badge badge-gray">
+                0.83（平衡）
+              </span>
+            </div>
+          </div>
+        </div>
+
 
           <div class="metric">
             <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
@@ -554,7 +702,7 @@
         </div>
 
         <div class="comment">
-          30天平值隐含波动率约为 13.0%，整体水平偏低。 较前一交易日变动 -1.7 波动点。 10%虚值看跌相对ATM贵 +9.2 波动点，反映下行保护需求。 10%虚值看涨相对ATM +0.0 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 7,812,734 张 vs 看跌 11,342,079 张）。 看涨/看跌持仓比较前一日变动 +0.00。 波动率偏低，整体风险偏好尚可；10%虚值看跌溢价明显，下档保护需求强；看跌持仓占优。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
+          30天平值隐含波动率约为 13.0%，整体水平偏低。 较前一交易日变动 -1.7 波动点。 10%虚值看跌相对ATM贵 +9.2 波动点，反映下行保护需求。 10%虚值看涨相对ATM +0.0 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 7,812,734 张 vs 看跌 11,342,079 张）。 看涨/看跌持仓比较前一日变动 +0.00。 当日成交方面，看涨 1,832,789 张、看跌 2,200,343 张，成交比为 0.83（平衡）。 波动率偏低，整体风险偏好尚可；10%虚值看跌溢价明显，下档保护需求强；看跌持仓占优。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
         </div>
       </section>
       
@@ -573,31 +721,88 @@
           <div class="as-of">快照日期：2025-12-11</div>
         </div>
 
-        <div class="metric-grid">
+                <div class="metric-grid">
+          <!-- 30D ATM IV -->
           <div class="metric">
             <div class="metric-label">30天ATM隐含波动率</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger" data-symbol="NDX">
-  18.1%
-  
-    <span class="metric-change">-1.5 波动点</span>
-  
-</div>
-
+                18.1%
+                
+                  <span class="metric-change">-1.5 波动点</span>
+                
+              </div>
               <span class="badge badge-yellow">正常</span>
+            </div>
+            <div class="metric-sub">
+              5/10日均：18.7% / 19.0%
             </div>
           </div>
 
+
+          <!-- Skew：10% OTM Put -->
           <div class="metric">
             <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger" data-symbol="NDX">
-  +6.6 波动点
-</div>
-
+                +6.6 波动点
+              </div>
               <span class="badge badge-red">极端</span>
             </div>
           </div>
+
+          <!-- Skew：10% OTM Call -->
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="NDX">
+                -2.7 波动点
+              </div>
+              <span class="badge badge-yellow">中性</span>
+            </div>
+          </div>
+
+          <!-- 总持仓 CPR -->
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="NDX">
+                65,025 / 92,808
+                
+                  <span class="metric-change">-0.01</span>
+                
+              </div>
+              <span class="badge badge-green">平衡</span>
+            </div>
+          </div>
+
+          <!-- 期限结构：0–30 vs 30–90 -->
+          <div class="metric">
+            <div class="metric-label">期限结构：0–30天 vs 30–90天</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                15.6% / 17.2%
+              </div>
+              <span class="badge ">
+                +1.6 波动点
+              </span>
+            </div>
+          </div>
+
+          <!-- 当日成交：Call / Put -->
+          <div class="metric">
+            <div class="metric-label">当日成交：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                42,387 / 32,458
+              </div>
+              <span class="badge badge-gray">
+                1.31（看涨占优）
+              </span>
+            </div>
+          </div>
+        </div>
+
 
           <div class="metric">
             <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
@@ -626,7 +831,7 @@
         </div>
 
         <div class="comment">
-          30天平值隐含波动率约为 18.1%，整体水平正常。 较前一交易日变动 -1.5 波动点。 10%虚值看跌相对ATM贵 +6.6 波动点，反映下行保护需求。 10%虚值看涨相对ATM -2.7 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏平衡（看涨 65,025 张 vs 看跌 92,808 张）。 看涨/看跌持仓比较前一日变动 -0.01。 10%虚值看跌溢价明显，下档保护需求强；10%虚值看涨不贵，上档追涨意愿有限。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
+          30天平值隐含波动率约为 18.1%，整体水平正常。 较前一交易日变动 -1.5 波动点。 10%虚值看跌相对ATM贵 +6.6 波动点，反映下行保护需求。 10%虚值看涨相对ATM -2.7 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏平衡（看涨 65,025 张 vs 看跌 92,808 张）。 看涨/看跌持仓比较前一日变动 -0.01。 当日成交方面，看涨 42,387 张、看跌 32,458 张，成交比为 1.31（看涨占优）。 10%虚值看跌溢价明显，下档保护需求强；10%虚值看涨不贵，上档追涨意愿有限。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
         </div>
       </section>
       
@@ -645,31 +850,88 @@
           <div class="as-of">快照日期：2025-12-11</div>
         </div>
 
-        <div class="metric-grid">
+                <div class="metric-grid">
+          <!-- 30D ATM IV -->
           <div class="metric">
             <div class="metric-label">30天ATM隐含波动率</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger" data-symbol="SPY">
-  11.6%
-  
-    <span class="metric-change">-2.4 波动点</span>
-  
-</div>
-
+                11.6%
+                
+                  <span class="metric-change">-2.4 波动点</span>
+                
+              </div>
               <span class="badge badge-green">偏低</span>
+            </div>
+            <div class="metric-sub">
+              5/10日均：12.9% / 13.2%
             </div>
           </div>
 
+
+          <!-- Skew：10% OTM Put -->
           <div class="metric">
             <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger" data-symbol="SPY">
-  +10.8 波动点
-</div>
-
+                +10.8 波动点
+              </div>
               <span class="badge badge-red">极端</span>
             </div>
           </div>
+
+          <!-- Skew：10% OTM Call -->
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPY">
+                +1.9 波动点
+              </div>
+              <span class="badge badge-green">温和</span>
+            </div>
+          </div>
+
+          <!-- 总持仓 CPR -->
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="SPY">
+                5,666,803 / 11,476,747
+                
+                  <span class="metric-change">-0.00</span>
+                
+              </div>
+              <span class="badge badge-yellow">看跌占优</span>
+            </div>
+          </div>
+
+          <!-- 期限结构：0–30 vs 30–90 -->
+          <div class="metric">
+            <div class="metric-label">期限结构：0–30天 vs 30–90天</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                12.0% / 14.2%
+              </div>
+              <span class="badge ">
+                +2.2 波动点
+              </span>
+            </div>
+          </div>
+
+          <!-- 当日成交：Call / Put -->
+          <div class="metric">
+            <div class="metric-label">当日成交：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                4,198,310 / 4,418,781
+              </div>
+              <span class="badge badge-gray">
+                0.95（平衡）
+              </span>
+            </div>
+          </div>
+        </div>
+
 
           <div class="metric">
             <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
@@ -698,7 +960,7 @@
         </div>
 
         <div class="comment">
-          30天平值隐含波动率约为 11.6%，整体水平偏低。 较前一交易日变动 -2.4 波动点。 10%虚值看跌相对ATM贵 +10.8 波动点，反映下行保护需求。 10%虚值看涨相对ATM +1.9 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 5,666,803 张 vs 看跌 11,476,747 张）。 看涨/看跌持仓比较前一日变动 -0.00。 波动率偏低，整体风险偏好尚可；10%虚值看跌溢价明显，下档保护需求强；看跌持仓占优。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
+          30天平值隐含波动率约为 11.6%，整体水平偏低。 较前一交易日变动 -2.4 波动点。 10%虚值看跌相对ATM贵 +10.8 波动点，反映下行保护需求。 10%虚值看涨相对ATM +1.9 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 5,666,803 张 vs 看跌 11,476,747 张）。 看涨/看跌持仓比较前一日变动 -0.00。 当日成交方面，看涨 4,198,310 张、看跌 4,418,781 张，成交比为 0.95（平衡）。 波动率偏低，整体风险偏好尚可；10%虚值看跌溢价明显，下档保护需求强；看跌持仓占优；30–90 天 IV 高于 0–30 天，市场对中期风险有一定溢价。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
         </div>
       </section>
       
@@ -717,31 +979,88 @@
           <div class="as-of">快照日期：2025-12-11</div>
         </div>
 
-        <div class="metric-grid">
+                <div class="metric-grid">
+          <!-- 30D ATM IV -->
           <div class="metric">
             <div class="metric-label">30天ATM隐含波动率</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger" data-symbol="QQQ">
-  16.7%
-  
-    <span class="metric-change">-2.4 波动点</span>
-  
-</div>
-
+                16.7%
+                
+                  <span class="metric-change">-2.4 波动点</span>
+                
+              </div>
               <span class="badge badge-yellow">正常</span>
+            </div>
+            <div class="metric-sub">
+              5/10日均：17.9% / 18.3%
             </div>
           </div>
 
+
+          <!-- Skew：10% OTM Put -->
           <div class="metric">
             <div class="metric-label">Skew：10%虚值看跌 vs ATM</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger" data-symbol="QQQ">
-  +7.9 波动点
-</div>
-
+                +7.9 波动点
+              </div>
               <span class="badge badge-red">极端</span>
             </div>
           </div>
+
+          <!-- Skew：10% OTM Call -->
+          <div class="metric">
+            <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="QQQ">
+                -1.2 波动点
+              </div>
+              <span class="badge badge-green">温和</span>
+            </div>
+          </div>
+
+          <!-- 总持仓 CPR -->
+          <div class="metric">
+            <div class="metric-label">总持仓：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-symbol="QQQ">
+                4,170,828 / 6,553,582
+                
+                  <span class="metric-change">-0.01</span>
+                
+              </div>
+              <span class="badge badge-yellow">看跌占优</span>
+            </div>
+          </div>
+
+          <!-- 期限结构：0–30 vs 30–90 -->
+          <div class="metric">
+            <div class="metric-label">期限结构：0–30天 vs 30–90天</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                16.0% / 18.7%
+              </div>
+              <span class="badge ">
+                +2.7 波动点
+              </span>
+            </div>
+          </div>
+
+          <!-- 当日成交：Call / Put -->
+          <div class="metric">
+            <div class="metric-label">当日成交：Call / Put</div>
+            <div class="metric-badge-row">
+              <div class="metric-value">
+                2,702,115 / 2,491,662
+              </div>
+              <span class="badge badge-gray">
+                1.08（平衡）
+              </span>
+            </div>
+          </div>
+        </div>
+
 
           <div class="metric">
             <div class="metric-label">Skew：10%虚值看涨 vs ATM</div>
@@ -770,7 +1089,7 @@
         </div>
 
         <div class="comment">
-          30天平值隐含波动率约为 16.7%，整体水平正常。 较前一交易日变动 -2.4 波动点。 10%虚值看跌相对ATM贵 +7.9 波动点，反映下行保护需求。 10%虚值看涨相对ATM -1.2 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 4,170,828 张 vs 看跌 6,553,582 张）。 看涨/看跌持仓比较前一日变动 -0.01。 10%虚值看跌溢价明显，下档保护需求强；10%虚值看涨不贵，上档追涨意愿有限；看跌持仓占优。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
+          30天平值隐含波动率约为 16.7%，整体水平正常。 较前一交易日变动 -2.4 波动点。 10%虚值看跌相对ATM贵 +7.9 波动点，反映下行保护需求。 10%虚值看涨相对ATM -1.2 波动点，体现上行收益布局。 整体看涨/看跌持仓结构偏看跌占优（看涨 4,170,828 张 vs 看跌 6,553,582 张）。 看涨/看跌持仓比较前一日变动 -0.01。 当日成交方面，看涨 2,702,115 张、看跌 2,491,662 张，成交比为 1.08（平衡）。 10%虚值看跌溢价明显，下档保护需求强；10%虚值看涨不贵，上档追涨意愿有限；看跌持仓占优；30–90 天 IV 高于 0–30 天，市场对中期风险有一定溢价。 综合期权结构，短线情绪判断为：偏空（防守）。情绪偏空但波动率并不极端，更适合耐心等待价格与宽度进一步确认，不宜盲目抄底。
         </div>
       </section>
       
