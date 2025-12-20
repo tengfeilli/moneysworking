@@ -1,0 +1,11 @@
+{
+  "state": "RISK_OFF",
+  "badge_class": "badge-green",
+  "title_cn": "市场平稳",
+  "message": "风险开关未触发：未见明显尾部挤压或短端事件溢价升温。",
+  "action": "建议：按你的技术信号执行；止损仍以“前低纪律”为主，保护按常规配置即可。",
+  "reasons": [],
+  "since_trade_date": "2025-12-18",
+  "last_change_trade_date": "2025-12-18",
+  "transition": "保持"
+}
