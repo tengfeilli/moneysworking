@@ -101,20 +101,20 @@ h1,h2,h3 { color: var(--text); }
 
     .signals-panel li { color: var(--text); }
 
-    .light-pill{
+    /* 圆点灯：不显示文字，只显示颜色 */
+.light-dot{
   display:inline-block;
-  padding: 0.05rem 0.55rem;
+  width: 12px;
+  height: 12px;
   border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  line-height: 1.2;
-  border: 1px solid transparent;
   vertical-align: middle;
+  margin: 0 0.35rem;
+  box-shadow: 0 0 0 1px var(--border) inset;
 }
 
-.light-green{ color:#1aaf5d; background:#eaf7f0; border-color:#bfe8d1; }
-.light-red{   color:#d93025; background:#fdecec; border-color:#f5c2bf; }
-.light-yellow{color:#8a6d1d; background:#fff7e0; border-color:#f3df9b; }
+.dot-green{  background:#22c55e; }
+.dot-red{    background:#ef4444; }
+.dot-yellow{ background:#f59e0b; }
 
     .chart-frame {
   width: 100%;
@@ -212,7 +212,7 @@ h1,h2,h3 { color: var(--text); }
   <div class="top-row">
     <div class="headline-panel">
       <h2>状态灯摘要</h2>
-      <div id="headline-text">MA20启动灯：<span class="light-pill light-red">RED</span>（上次转灯：2025-12-02 GREEN→RED）<br>组合状态灯：<span class="light-pill light-yellow">YELLOW</span>（上次转灯：2025-12-19 RED→YELLOW）</div>
+      <div id="headline-text">MA20启动灯：<span class="light-dot dot-red" title="RED" aria-label="RED"></span>（上次转灯：2025-12-02 <span class="light-dot dot-green" title="GREEN" aria-label="GREEN"></span>→<span class="light-dot dot-red" title="RED" aria-label="RED"></span>）<br>组合状态灯：<span class="light-dot dot-yellow" title="YELLOW" aria-label="YELLOW"></span>（上次转灯：2025-12-19 <span class="light-dot dot-red" title="RED" aria-label="RED"></span>→<span class="light-dot dot-yellow" title="YELLOW" aria-label="YELLOW"></span>）</div>
     </div>
 
     <div class="signals-panel">
@@ -249,7 +249,7 @@ h1,h2,h3 { color: var(--text); }
   </div>
 
     <script>
-    const INDEX_DATA = {"sp500": {"code": "sp500", "name": "SP500", "date": "2025-12-19", "headline": "MA20启动灯：<span class=\"light-pill light-red\">RED</span>（上次转灯：2025-12-02 GREEN→RED）<br>组合状态灯：<span class=\"light-pill light-yellow\">YELLOW</span>（上次转灯：2025-12-19 RED→YELLOW）", "bullets": ["高位扩散开始收敛，涨势有一定降温迹象。", "低位个股在增多，短期结构性风险有所抬头。"], "chart_src_all": "sp500_breadth_chart.html", "chart_src_1y": "sp500_breadth_chart_1y.html"}, "ndx100": {"code": "ndx100", "name": "NDX100", "date": "2025-12-19", "headline": "MA20启动灯：<span class=\"light-pill light-red\">RED</span>（上次转灯：2025-10-24 GREEN→RED）<br>组合状态灯：<span class=\"light-pill light-yellow\">YELLOW</span>（上次转灯：2025-12-16 GREEN→YELLOW）", "bullets": ["高位扩散开始收敛，涨势有一定降温迹象。", "低位个股在增多，短期结构性风险有所抬头。"], "chart_src_all": "ndx100_breadth_chart.html", "chart_src_1y": "ndx100_breadth_chart_1y.html"}};
+    const INDEX_DATA = {"sp500": {"code": "sp500", "name": "SP500", "date": "2025-12-19", "headline": "MA20启动灯：<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>（上次转灯：2025-12-02 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>）<br>组合状态灯：<span class=\"light-dot dot-yellow\" title=\"YELLOW\" aria-label=\"YELLOW\"></span>（上次转灯：2025-12-19 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-yellow\" title=\"YELLOW\" aria-label=\"YELLOW\"></span>）", "bullets": ["高位扩散开始收敛，涨势有一定降温迹象。", "低位个股在增多，短期结构性风险有所抬头。"], "chart_src_all": "sp500_breadth_chart.html", "chart_src_1y": "sp500_breadth_chart_1y.html"}, "ndx100": {"code": "ndx100", "name": "NDX100", "date": "2025-12-19", "headline": "MA20启动灯：<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>（上次转灯：2025-10-24 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>）<br>组合状态灯：<span class=\"light-dot dot-yellow\" title=\"YELLOW\" aria-label=\"YELLOW\"></span>（上次转灯：2025-12-16 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-yellow\" title=\"YELLOW\" aria-label=\"YELLOW\"></span>）", "bullets": ["高位扩散开始收敛，涨势有一定降温迹象。", "低位个股在增多，短期结构性风险有所抬头。"], "chart_src_all": "ndx100_breadth_chart.html", "chart_src_1y": "ndx100_breadth_chart_1y.html"}};
     const DEFAULT_CODE = "sp500";
 
     function renderIndex(code, rangeMode) {
