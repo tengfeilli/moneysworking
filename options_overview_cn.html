@@ -322,20 +322,6 @@
             <div class="metric-sub">解读：为正=短期尾部需求升温。</div>
           </div>
 
-          <div class="metric-group">数据质量（用于识别“信号 vs 数据”）</div>
-
-          <div class="metric" style="grid-column: 1 / -1;">
-            <div class="metric-label">近月 CALL IV 缺失率</div>
-            <div class="metric-badge-row">
-              <div class="metric-value history-trigger" data-history="1">43.4%</div>
-              <span class="badge badge-red">偏差</span>
-            </div>
-            <div class="metric-sub">缺失率过高时，偏度类指标可信度下降（RR25 相对更稳）。</div>
-          </div>
-        </div>
-      </section>
-    </div>
-
     <div class="disclaimer">
       免责声明：本页面仅用于信息展示和教育目的，不构成任何投资建议。数据为日终快照，可能存在延迟或错误。
       <br/>建议将“状态卡 + 核心三指标（ATM / RR / Wing）”作为仓位风险开关，其余为辅助解释。
@@ -363,7 +349,6 @@
             <th>90-30</th>
             <th>STP ATM</th>
             <th>STP WING</th>
-            <th>CALL缺失</th>
           </tr>
         </thead>
         <tbody id="history-tbody"></tbody>
@@ -372,7 +357,7 @@
   </div>
 
   <script>
-    const HISTORY = [{"date": "2025-12-22", "atm_iv_pct": "11.3%", "rr25_bp": "+4.2 vol点", "wing_minus_atm_bp": "+17.3 vol点", "term_30_90_bp": "+2.2 vol点", "stp_atm_bp": "-1.7 vol点", "stp_wing_bp": "+4.7 vol点", "call_missing_pct": "43.4%"}];
+    const HISTORY = [{"date": "2025-12-22", "atm_iv_pct": "11.3%", "rr25_bp": "+4.2 vol点", "wing_minus_atm_bp": "+17.3 vol点", "term_30_90_bp": "+2.2 vol点", "stp_atm_bp": "-1.7 vol点", "stp_wing_bp": "+4.7 vol点"}];
 
     (function () {
       const backdrop = document.getElementById('history-backdrop');
@@ -390,7 +375,6 @@
             <td>${r.term_30_90_bp ?? '-'}</td>
             <td>${r.stp_atm_bp ?? '-'}</td>
             <td>${r.stp_wing_bp ?? '-'}</td>
-            <td>${r.call_missing_pct ?? '-'}</td>
           </tr>
         `).join('');
 
