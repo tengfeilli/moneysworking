@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Breadth Overview - SP500 (2025-12-22)</title>
+  <title>Breadth Overview - SP500 (2025-12-23)</title>
   <style>
     body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -180,7 +180,7 @@ h1,h2,h3 { color: var(--text); }
     <div>
       <h1 style="margin-bottom: 0.2rem;">
         Breadth Overview - <span id="index-title">SP500</span>
-        <span class="index-tag" id="index-date">2025-12-22</span>
+        <span class="index-tag" id="index-date">2025-12-23</span>
       </h1>
       <div style="margin-top: 0.2rem;">
         <a href="index.html" class="back-link">&larr; 返回首页</a>
@@ -221,7 +221,7 @@ h1,h2,h3 { color: var(--text); }
         
           <li>更多个股正在向高位聚集，宽度在向上涨方向扩张。</li>
         
-          <li>早前积累的下行压力在逐步释放。</li>
+          <li>低位个股在增多，短期结构性风险有所抬头。</li>
         
           <li>多头结构在时间和空间上都在得到确认，局势逐步明朗。</li>
         
@@ -251,7 +251,7 @@ h1,h2,h3 { color: var(--text); }
   </div>
 
     <script>
-    const INDEX_DATA = {"sp500": {"code": "sp500", "name": "SP500", "date": "2025-12-22", "headline": "MA20启动灯：<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>（上次转灯：2025-12-02 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>）<br>组合状态灯：<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>（上次转灯：2025-12-22 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>）", "bullets": ["更多个股正在向高位聚集，宽度在向上涨方向扩张。", "早前积累的下行压力在逐步释放。", "多头结构在时间和空间上都在得到确认，局势逐步明朗。"], "chart_src_all": "sp500_breadth_chart.html", "chart_src_1y": "sp500_breadth_chart_1y.html"}, "ndx100": {"code": "ndx100", "name": "NDX100", "date": "2025-12-22", "headline": "MA20启动灯：<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>（上次转灯：2025-10-24 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>）<br>组合状态灯：<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>（上次转灯：2025-12-15 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>）", "bullets": ["更多个股正在向高位聚集，宽度在向上涨方向扩张。", "多头结构在时间和空间上都在得到确认，局势逐步明朗。"], "chart_src_all": "ndx100_breadth_chart.html", "chart_src_1y": "ndx100_breadth_chart_1y.html"}};
+    const INDEX_DATA = {"sp500": {"code": "sp500", "name": "SP500", "date": "2025-12-23", "headline": "MA20启动灯：<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>（上次转灯：2025-12-02 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>）<br>组合状态灯：<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>（上次转灯：2025-12-22 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>）", "bullets": ["更多个股正在向高位聚集，宽度在向上涨方向扩张。", "低位个股在增多，短期结构性风险有所抬头。", "多头结构在时间和空间上都在得到确认，局势逐步明朗。"], "chart_src_all": "sp500_breadth_chart.html", "chart_src_1y": "sp500_breadth_chart_1y.html"}, "ndx100": {"code": "ndx100", "name": "NDX100", "date": "2025-12-23", "headline": "MA20启动灯：<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>（上次转灯：2025-10-24 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>）<br>组合状态灯：<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>（上次转灯：2025-12-15 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>）", "bullets": ["更多个股正在向高位聚集，宽度在向上涨方向扩张。", "低位个股在增多，短期结构性风险有所抬头。"], "chart_src_all": "ndx100_breadth_chart.html", "chart_src_1y": "ndx100_breadth_chart_1y.html"}};
     const DEFAULT_CODE = "sp500";
 
     function renderIndex(code, rangeMode) {
