@@ -6,7 +6,7 @@
   "action": "建议：减仓或降杠杆；隔夜更保守；必要时用保护性 Put / Collar 兜底。",
   "reasons": [
     "Wing-ATM(30D) 偏高（+17.5 vol点）：尾部保险偏贵",
-    "RR25(30D) 偏高（+4.1 vol点）：需结合 Put/CallSkew 判断来源",
+    "RR25(30D) 很高（+4.1 vol点）：下行保护溢价升温",
     "WING 短期压力偏高（+5.0 vol点）：短期尾部需求升温"
   ],
   "since_trade_date": "2025-12-22",
