@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>SPX 风险状态（中文）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 18px;
+    }
+
+    .page { max-width: 840px; margin: 0 auto; }
+
+    .page-header {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .page-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-title { font-size: 26px; font-weight: 600; margin-bottom: 4px; }
+    .page-subtitle { font-size: 13px; color: #9ca3af; }
+    .tagline { font-size: 12px; color: #9ca3af; }
+
+    .metric-change { font-size: 11px; color: #9ca3af; margin-left: 6px; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.25), transparent 55%),
+                  #020617;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 14px 16px 16px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.55);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .symbol { font-size: 20px; font-weight: 600; letter-spacing: 0.04em; }
+    .symbol-sub { font-size: 12px; color: #9ca3af; }
+    .as-of { font-size: 11px; color: #9ca3af; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 16px;
+      margin-top: 6px;
+      margin-bottom: 2px;
+    }
+
+    .metric { display: flex; flex-direction: column; gap: 3px; font-size: 12px; }
+    .metric-label { color: #9ca3af; font-size: 12px; }
+    .metric-value { font-size: 16px; font-variant-numeric: tabular-nums; }
+    .metric-sub { margin-top: 2px; font-size: 11px; color: #9ca3af; font-variant-numeric: tabular-nums; }
+
+    .metric-group {
+      grid-column: 1 / -1;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed #1f2937;
+      font-size: 12px;
+      color: #9ca3af;
+      letter-spacing: 0.04em;
+    }
+
+    .history-trigger { cursor: pointer; }
+    .history-trigger:hover {
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      background: rgba(148, 163, 184, 0.08);
+      border-radius: 6px;
+    }
+
+    .history-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      z-index: 40;
+    }
+
+    .history-panel {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      max-width: 880px;
+      width: calc(100% - 32px);
+      background-color: #020617;
+      border-radius: 12px;
+      border: 1px solid #4b5563;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+      padding: 12px 16px 16px;
+      z-index: 50;
+    }
+
+    .history-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .history-panel-title { font-size: 14px; font-weight: 500; }
+    .history-panel-subtitle { font-size: 11px; color: #9ca3af; }
+
+    .history-close-btn {
+      border: none;
+      background: transparent;
+      color: #9ca3af;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 999px;
+      line-height: 1;
+    }
+
+    .history-close-btn:hover { background-color: #111827; color: #e5e7eb; }
+
+    .history-panel-content { max-height: 280px; overflow: auto; margin-top: 4px; }
+
+    .history-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .history-table th, .history-table td {
+      padding: 4px 8px;
+      text-align: right;
+      border-bottom: 1px solid #111827;
+      white-space: nowrap;
+    }
+    .history-table th:first-child, .history-table td:first-child { text-align: left; }
+    .history-table thead { position: sticky; top: 0; background-color: #020617; }
+
+    .metric-badge-row { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+
+    .badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .badge-green { background-color: #16a34a; color: #ecfdf3; }
+    .badge-yellow { background-color: #eab308; color: #fefce8; }
+    .badge-red { background-color: #dc2626; color: #fef2f2; }
+    .badge-gray { background-color: #4b5563; color: #e5e7eb; }
+
+    .disclaimer {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #6b7280;
+      border-top: 1px solid #1f2937;
+      padding-top: 8px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="page-header">
+      <div class="page-header-top">
+        <div>
+          <div class="page-title">SPX 市场风险状态</div>
+          <div class="page-subtitle">
+            核心指标：30D ATM IV · RR25(30D) · Wing-ATM(30D) · 期限结构 · 短期压力（前月-次月）
+          </div>
+        </div>
+      </div>
+      <div class="tagline">数据日期：2025-12-22</div>
+    </header>
+
+    <!-- 市场状态（持续提示直到改变） -->
+    <div class="card" style="margin-bottom:16px; padding:12px 16px;">
+      <div class="card-header" style="margin-bottom:8px;">
+        <div>
+          <div style="font-size:14px; font-weight:600;">市场状态（SPX）</div>
+          <div class="symbol-sub">状态会持续显示，直到发生转变（带滞回）</div>
+        </div>
+        <div class="as-of">as of 2025-12-22</div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px; font-size:13px; line-height:1.55;">
+        <div>
+          <span class="badge badge-red">市场风险</span>
+          <span style="margin-left:8px; color:#d1d5db;">风险开关触发：尾部保险/偏度/短端压力出现升温信号。</span>
+        </div>
+
+        <div style="color:#e5e7eb;">
+          建议：减仓或降杠杆；隔夜更保守；必要时用保护性 Put / Collar 兜底。
+        </div>
+
+        
+        <div style="margin-top:4px; font-size:12px; color:#9ca3af;">
+          触发原因：
+          <ul style="margin:6px 0 0 18px; padding:0;">
+            
+              <li>Wing-ATM(30D) 偏高（+17.3 vol点）：尾部保险偏贵</li>
+            
+              <li>RR25(30D) 很高（+4.2 vol点）：下行保护溢价升温</li>
+            
+              <li>WING 短期压力偏高（+4.7 vol点）：短期尾部需求升温</li>
+            
+          </ul>
+        </div>
+        
+
+        <div style="color:#9ca3af; font-size:12px;">
+          自 2025-12-22 起（上次转变：2025-12-22 · 初始化）
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="symbol">SPX</div>
+            <div class="symbol-sub">
+              标的收盘价：6,878.49
+              
+              · 30D ATM：11.3%
+            </div>
+          </div>
+          <div class="as-of">快照日期：2025-12-22</div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">30D ATM IV（基准风险溢价）</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-history="1">
+                11.3%
+                
+              </div>
+              <span class="badge badge-green">偏低</span>
+            </div>
+            <div class="metric-sub">5/10日均：N/A / N/A</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">RR25（30D，Put25 - Call25）</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-history="1">
+                +4.2 vol点
+                
+              </div>
+              <span class="badge badge-red">很高</span>
+            </div>
+            <div class="metric-sub">解读：越高=下行保护更贵=风险更高。</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">Wing-ATM（30D，10–20% Put Wing - ATM）</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-history="1">
+                +17.3 vol点
+                
+              </div>
+              <span class="badge badge-yellow">偏高</span>
+            </div>
+            <div class="metric-sub">解读：尾部保险整体变贵的强度。</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">期限结构（ATM，90D - 30D）</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-history="1">
+                +2.2 vol点
+              </div>
+              <span class="badge badge-yellow">中期溢价</span>
+            </div>
+            <div class="metric-sub">解读：为负=短端更贵（事件/恐慌），为正=正常。</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">短期压力（ATM：前月 - 次月）</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-history="1">
+                -1.7 vol点
+              </div>
+              <span class="badge badge-gray">中性</span>
+            </div>
+            <div class="metric-sub">解读：为正=短端紧；为负=短端宽松。</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">短期压力（WING：前月 - 次月）</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-history="1">
+                +4.7 vol点
+              </div>
+              <span class="badge badge-yellow">短期略紧</span>
+            </div>
+            <div class="metric-sub">解读：为正=短期尾部需求升温。</div>
+          </div>
+
+          <div class="metric-group">数据质量（用于识别“信号 vs 数据”）</div>
+
+          <div class="metric" style="grid-column: 1 / -1;">
+            <div class="metric-label">近月 CALL IV 缺失率</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger" data-history="1">43.4%</div>
+              <span class="badge badge-red">偏差</span>
+            </div>
+            <div class="metric-sub">缺失率过高时，偏度类指标可信度下降（RR25 相对更稳）。</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="disclaimer">
+      免责声明：本页面仅用于信息展示和教育目的，不构成任何投资建议。数据为日终快照，可能存在延迟或错误。
+      <br/>建议将“状态卡 + 核心三指标（ATM / RR / Wing）”作为仓位风险开关，其余为辅助解释。
+    </div>
+  </div>
+
+  <!-- 历史弹窗（精简表） -->
+  <div id="history-backdrop" class="history-backdrop" style="display:none;"></div>
+  <div id="history-panel" class="history-panel" style="display:none;">
+    <div class="history-panel-header">
+      <div>
+        <div class="history-panel-title" id="history-title">SPX 历史（最近 20 日）</div>
+        <div class="history-panel-subtitle" id="history-subtitle">点击任意指标打开</div>
+      </div>
+      <button id="history-close" class="history-close-btn">&times;</button>
+    </div>
+    <div class="history-panel-content">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>ATM30</th>
+            <th>RR25(30)</th>
+            <th>Wing-ATM(30)</th>
+            <th>90-30</th>
+            <th>STP ATM</th>
+            <th>STP WING</th>
+            <th>CALL缺失</th>
+          </tr>
+        </thead>
+        <tbody id="history-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const HISTORY = [{"date": "2025-12-22", "atm_iv_pct": "11.3%", "rr25_bp": "+4.2 vol点", "wing_minus_atm_bp": "+17.3 vol点", "term_30_90_bp": "+2.2 vol点", "stp_atm_bp": "-1.7 vol点", "stp_wing_bp": "+4.7 vol点", "call_missing_pct": "43.4%"}];
+
+    (function () {
+      const backdrop = document.getElementById('history-backdrop');
+      const panel = document.getElementById('history-panel');
+      const tbody = document.getElementById('history-tbody');
+      const closeBtn = document.getElementById('history-close');
+
+      function openHistory() {
+        tbody.innerHTML = (HISTORY || []).map(r => `
+          <tr>
+            <td>${r.date ?? '-'}</td>
+            <td>${r.atm_iv_pct ?? '-'}</td>
+            <td>${r.rr25_bp ?? '-'}</td>
+            <td>${r.wing_minus_atm_bp ?? '-'}</td>
+            <td>${r.term_30_90_bp ?? '-'}</td>
+            <td>${r.stp_atm_bp ?? '-'}</td>
+            <td>${r.stp_wing_bp ?? '-'}</td>
+            <td>${r.call_missing_pct ?? '-'}</td>
+          </tr>
+        `).join('');
+
+        backdrop.style.display = 'block';
+        panel.style.display = 'block';
+      }
+
+      function closeHistory() {
+        backdrop.style.display = 'none';
+        panel.style.display = 'none';
+      }
+
+      document.addEventListener('click', (ev) => {
+        const el = ev.target.closest('.history-trigger');
+        if (!el) return;
+        openHistory();
+      });
+
+      backdrop.addEventListener('click', closeHistory);
+      closeBtn.addEventListener('click', closeHistory);
+      document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeHistory(); });
+    })();
+  </script>
+</body>
+</html>
