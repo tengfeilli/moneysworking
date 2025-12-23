@@ -11,5 +11,11 @@
   ],
   "since_trade_date": "2025-12-22",
   "last_change_trade_date": "2025-12-22",
-  "transition": "保持"
+  "transition": "保持",
+  "trade_date": "2025-12-23",
+  "symbol": "SPX",
+  "risk_score": 6,
+  "light": "red",
+  "market_state_cn": "偏防守",
+  "market_state_reason_cn": "score=6；Wing-ATM(30D) 偏高（+17.5 vol点）：尾部保险偏贵；RR25(30D) 很高（+4.1 vol点）：下行保护溢价升温；WING 短期压力偏高（+5.0 vol点）：短期尾部需求升温"
 }
