@@ -9,9 +9,9 @@
     "RR25(30D) 很高（+4.1 vol点）：下行保护溢价升温",
     "WING 短期压力偏高（+5.0 vol点）：短期尾部需求升温"
   ],
-  "since_trade_date": "2025-12-22",
-  "last_change_trade_date": "2025-12-22",
-  "transition": "保持",
+  "since_trade_date": "2025-12-23",
+  "last_change_trade_date": "2025-12-23",
+  "transition": "初始化",
   "trade_date": "2025-12-23",
   "symbol": "SPX",
   "risk_score": 6,
