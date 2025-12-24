@@ -158,8 +158,45 @@
       const stateCN   = payload.market_state_cn || payload.state_cn || payload.state || "";
       const reasonCN  = payload.market_state_reason_cn || payload.reason_cn || "";
 
+      const light = pickLight(payload, stateCN);
+
       // 允许 JSON 直接给 light；不给就按文本推断
-      const light = payload.light || inferLightFromText(stateCN);
+      function normalizeLight(x){
+  const s = String(x || "").toLowerCase();
+  if (s.includes("green") || s.includes("多")) return "green";
+  if (s.includes("amber") || s.includes("yellow") || s.includes("中性") || s.includes("观望")) return "amber";
+  if (s.includes("red") || s.includes("风险") || s.includes("空") || s.includes("防守")) return "red";
+  return "";
+}
+
+// 只要有一个绿灯 => 绿；否则有黄 => 黄；否则红
+function pickLight(payload, fallbackStateCN){
+  // 1) 兼容你未来/现在可能的字段名
+  const candidates = [];
+
+  // 常见单灯字段
+  if (payload.light) candidates.push(payload.light);
+
+  // 你这个 Breadth 的双灯字段（你后端按其中一种输出即可）
+  if (payload.ma20_light) candidates.push(payload.ma20_light);
+  if (payload.combo_light) candidates.push(payload.combo_light);
+  if (payload.composite_light) candidates.push(payload.composite_light);
+
+  // 也兼容 lights: { ma20:"red", combo:"green" } 或 lights:["red","green"]
+  if (payload.lights && Array.isArray(payload.lights)) candidates.push(...payload.lights);
+  if (payload.lights && typeof payload.lights === "object") candidates.push(...Object.values(payload.lights));
+
+  // 2) 归一化
+  const lights = candidates.map(normalizeLight).filter(Boolean);
+
+  if (lights.includes("green")) return "green";
+  if (lights.includes("amber")) return "amber";
+  if (lights.includes("red")) return "red";
+
+  // 3) 最后才用文字推断兜底
+  return inferLightFromText(fallbackStateCN);
+}
+
 
       const trafficHTML = `
         <span class="traffic" title="红=风险/防守；绿=偏多/稳">
