@@ -163,32 +163,34 @@
 
   // ✅ 核心：只要任何一个候选灯是 green => green；否则 red
   function pickLight(payload, fallbackStateCN){
-    const candidates = [];
+  const candidates = [];
 
-    // 1) 你现在已有的单灯字段
-    if (payload.light) candidates.push(payload.light);
+  // ✅ 先吃“子灯字段”
+  if (payload.ma20_light) candidates.push(payload.ma20_light);
+  if (payload.combo_light) candidates.push(payload.combo_light);
+  if (payload.composite_light) candidates.push(payload.composite_light);
 
-    // 2) Breadth 的双灯字段（建议你后端输出其中一种命名）
-    if (payload.ma20_light) candidates.push(payload.ma20_light);
-    if (payload.combo_light) candidates.push(payload.combo_light);
-    if (payload.composite_light) candidates.push(payload.composite_light);
+  // ✅ 兼容 lights: ["red","green"] 或 lights: {ma20:"red", combo:"green"}
+  if (payload.lights && Array.isArray(payload.lights)) candidates.push(...payload.lights);
+  if (payload.lights && typeof payload.lights === "object") candidates.push(...Object.values(payload.lights));
 
-    // 3) 兼容 lights: ["red","green"] 或 lights: {ma20:"red", combo:"green"}
-    if (payload.lights && Array.isArray(payload.lights)) candidates.push(...payload.lights);
-    if (payload.lights && typeof payload.lights === "object") candidates.push(...Object.values(payload.lights));
+  // ✅ 关键：从 reason 文本里解析（你现在就是这种：MA20=RED，组合=GREEN）
+  const reason = payload.market_state_reason_cn || payload.reason_cn || payload.reason || "";
+  const mMA20 = reason.match(/MA20\s*=\s*(GREEN|RED|AMBER)/i);
+  const mCombo = reason.match(/(组合|COMBO|COMPOSITE)\s*=\s*(GREEN|RED|AMBER)/i);
+  if (mMA20) candidates.push(mMA20[1]);
+  if (mCombo) candidates.push(mCombo[2]);
 
-    // 4) 如果你后端输出的是“文字状态”而不是 light，也能吃进来推断
-    if (payload.ma20_state_cn) candidates.push(payload.ma20_state_cn);
-    if (payload.combo_state_cn) candidates.push(payload.combo_state_cn);
+  // ✅ 最后才把 payload.light 当兜底
+  if (payload.light) candidates.push(payload.light);
 
-    const lights = candidates.map(normalizeLight).filter(Boolean);
+  const lights = candidates.map(normalizeLight).filter(Boolean);
 
-    if (lights.includes("green")) return "green";
-    if (lights.includes("red")) return "red";
+  // ✅ 你要的规则：只要有一个 green => green；否则 red
+  if (lights.includes("green")) return "green";
+  return "red";
+}
 
-    // 最后兜底：用整体 stateCN 推断
-    return inferLightFromText(fallbackStateCN);
-  }
 
   function renderStatus(el, payload){
     const tradeDate = payload.trade_date || payload.tradeDate || "";
