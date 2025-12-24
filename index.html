@@ -144,94 +144,94 @@
   <footer>
     本站基于 GitHub Pages 静态托管 · 仅展示每日宽度与期权结构快照 · 不构成任何投资建议。
   </footer>
+<script>
+  // 兜底：从中文状态文字推断（可选）
+  function inferLightFromText(stateText){
+    const s = String(stateText || "");
+    if (/(风险|防守|偏空|看空|空头|红)/.test(s)) return "red";
+    if (/(偏多|看多|多头|绿)/.test(s)) return "green";
+    return "red"; // 不明确就偏保守
+  }
 
-  <script>
-    function inferLightFromText(stateText){
-      const s = String(stateText || "");
-      // 与 delta_wall_interactive 的 inferLight 同口径
-      if (/(风险|防守|偏空)/.test(s)) return "red";
-      return "green";
+  // 把各种可能的字段值，归一化成 "green"/"red"
+  function normalizeLight(x){
+    const s = String(x || "").toLowerCase();
+    if (/green|偏多|看多|多头|绿/.test(s)) return "green";
+    if (/red|风险|防守|偏空|看空|空头|红/.test(s)) return "red";
+    return "";
+  }
+
+  // ✅ 核心：只要任何一个候选灯是 green => green；否则 red
+  function pickLight(payload, fallbackStateCN){
+    const candidates = [];
+
+    // 1) 你现在已有的单灯字段
+    if (payload.light) candidates.push(payload.light);
+
+    // 2) Breadth 的双灯字段（建议你后端输出其中一种命名）
+    if (payload.ma20_light) candidates.push(payload.ma20_light);
+    if (payload.combo_light) candidates.push(payload.combo_light);
+    if (payload.composite_light) candidates.push(payload.composite_light);
+
+    // 3) 兼容 lights: ["red","green"] 或 lights: {ma20:"red", combo:"green"}
+    if (payload.lights && Array.isArray(payload.lights)) candidates.push(...payload.lights);
+    if (payload.lights && typeof payload.lights === "object") candidates.push(...Object.values(payload.lights));
+
+    // 4) 如果你后端输出的是“文字状态”而不是 light，也能吃进来推断
+    if (payload.ma20_state_cn) candidates.push(payload.ma20_state_cn);
+    if (payload.combo_state_cn) candidates.push(payload.combo_state_cn);
+
+    const lights = candidates.map(normalizeLight).filter(Boolean);
+
+    if (lights.includes("green")) return "green";
+    if (lights.includes("red")) return "red";
+
+    // 最后兜底：用整体 stateCN 推断
+    return inferLightFromText(fallbackStateCN);
+  }
+
+  function renderStatus(el, payload){
+    const tradeDate = payload.trade_date || payload.tradeDate || "";
+    const stateCN   = payload.market_state_cn || payload.state_cn || payload.state || "";
+    const reasonCN  = payload.market_state_reason_cn || payload.reason_cn || "";
+
+    const light = pickLight(payload, stateCN);
+
+    const trafficHTML = `
+      <span class="traffic" title="红=风险/防守；绿=偏多/稳（Breadth: 任意一灯绿 => 绿）">
+        <span class="light red ${light==="red" ? "on" : ""}"></span>
+        <span class="light green ${light==="green" ? "on" : ""}"></span>
+      </span>
+    `;
+
+    const label = stateCN ? `状态：${stateCN}` : "状态：--";
+    const dateLabel = tradeDate ? ` · ${tradeDate}` : "";
+    const tip = reasonCN ? `\n${reasonCN}` : "";
+
+    el.title = (label + dateLabel + tip).trim();
+    el.innerHTML = `${trafficHTML}<span>${label}${dateLabel}</span>`;
+  }
+
+  async function loadOneStatus(el){
+    const url = el.getAttribute("data-status-src");
+    if (!url) return;
+
+    try{
+      // 防缓存：加时间戳（GitHub Pages/CDN 更稳）
+      const res = await fetch(`${url}?t=${Date.now()}`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const payload = await res.json();
+      renderStatus(el, payload || {});
+    }catch(e){
+      el.textContent = "状态：暂不可用";
+      el.title = `加载失败：${String(e)}`;
     }
+  }
 
-    function renderStatus(el, payload){
-      const tradeDate = payload.trade_date || payload.tradeDate || "";
-      const stateCN   = payload.market_state_cn || payload.state_cn || payload.state || "";
-      const reasonCN  = payload.market_state_reason_cn || payload.reason_cn || "";
+  document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll(".status[data-status-src]").forEach(loadOneStatus);
+  });
+</script>
 
-      const light = pickLight(payload, stateCN);
-
-      // 允许 JSON 直接给 light；不给就按文本推断
-      function normalizeLight(x){
-  const s = String(x || "").toLowerCase();
-  if (s.includes("green") || s.includes("多")) return "green";
-  if (s.includes("amber") || s.includes("yellow") || s.includes("中性") || s.includes("观望")) return "amber";
-  if (s.includes("red") || s.includes("风险") || s.includes("空") || s.includes("防守")) return "red";
-  return "";
-}
-
-// 只要有一个绿灯 => 绿；否则有黄 => 黄；否则红
-function pickLight(payload, fallbackStateCN){
-  // 1) 兼容你未来/现在可能的字段名
-  const candidates = [];
-
-  // 常见单灯字段
-  if (payload.light) candidates.push(payload.light);
-
-  // 你这个 Breadth 的双灯字段（你后端按其中一种输出即可）
-  if (payload.ma20_light) candidates.push(payload.ma20_light);
-  if (payload.combo_light) candidates.push(payload.combo_light);
-  if (payload.composite_light) candidates.push(payload.composite_light);
-
-  // 也兼容 lights: { ma20:"red", combo:"green" } 或 lights:["red","green"]
-  if (payload.lights && Array.isArray(payload.lights)) candidates.push(...payload.lights);
-  if (payload.lights && typeof payload.lights === "object") candidates.push(...Object.values(payload.lights));
-
-  // 2) 归一化
-  const lights = candidates.map(normalizeLight).filter(Boolean);
-
-  if (lights.includes("green")) return "green";
-  if (lights.includes("amber")) return "amber";
-  if (lights.includes("red")) return "red";
-
-  // 3) 最后才用文字推断兜底
-  return inferLightFromText(fallbackStateCN);
-}
-
-
-      const trafficHTML = `
-        <span class="traffic" title="红=风险/防守；绿=偏多/稳">
-          <span class="light red ${light==="red" ? "on" : ""}"></span>
-          <span class="light green ${light==="green" ? "on" : ""}"></span>
-        </span>
-      `;
-
-      const label = stateCN ? `状态：${stateCN}` : "状态：--";
-      const dateLabel = tradeDate ? ` · ${tradeDate}` : "";
-      const tip = reasonCN ? `\n${reasonCN}` : "";
-
-      el.title = (label + dateLabel + tip).trim();
-      el.innerHTML = `${trafficHTML}<span>${label}${dateLabel}</span>`;
-    }
-
-    async function loadOneStatus(el){
-      const url = el.getAttribute("data-status-src");
-      if (!url) return;
-
-      try{
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const payload = await res.json();
-        renderStatus(el, payload || {});
-      }catch(e){
-        // 失败就显示灰字，不影响主页面
-        el.textContent = "状态：暂不可用";
-        el.title = `加载失败：${String(e)}`;
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", function(){
-      document.querySelectorAll(".status[data-status-src]").forEach(loadOneStatus);
-    });
-  </script>
 </body>
 </html>
