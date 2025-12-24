@@ -18,7 +18,7 @@
       font-size: 18px;
     }
 
-    .page { max-width: 840px; margin: 0 auto; }
+    .page { max-width: 880px; margin: 0 auto; }
 
     .page-header {
       margin-bottom: 18px;
@@ -100,6 +100,42 @@
       border-radius: 6px;
     }
 
+    .badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-green { background-color: #16a34a; color: #ecfdf3; }
+    .badge-red { background-color: #dc2626; color: #fef2f2; }
+    .badge-gray { background-color: #4b5563; color: #e5e7eb; }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+      box-shadow: 0 0 0 2px rgba(2, 6, 23, 0.8);
+      flex: 0 0 auto;
+      margin-left: 6px;
+      transform: translateY(1px);
+    }
+    .dot-green { background-color: #16a34a; }
+    .dot-red { background-color: #dc2626; }
+    .dot-gray { background-color: #4b5563; }
+
+    .metric-badge-row { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+
+    .disclaimer {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #6b7280;
+      border-top: 1px solid #1f2937;
+      padding-top: 8px;
+      line-height: 1.5;
+    }
+
     .history-backdrop {
       position: fixed;
       inset: 0;
@@ -130,7 +166,7 @@
       gap: 8px;
     }
 
-    .history-panel-title { font-size: 14px; font-weight: 500; }
+    .history-panel-title { font-size: 14px; font-weight: 600; }
     .history-panel-subtitle { font-size: 11px; color: #9ca3af; }
 
     .history-close-btn {
@@ -157,29 +193,6 @@
     }
     .history-table th:first-child, .history-table td:first-child { text-align: left; }
     .history-table thead { position: sticky; top: 0; background-color: #020617; }
-
-    .metric-badge-row { display: flex; align-items: center; gap: 6px; font-size: 12px; }
-
-    .badge {
-      display: inline-block;
-      padding: 1px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 500;
-    }
-    .badge-green { background-color: #16a34a; color: #ecfdf3; }
-    .badge-yellow { background-color: #eab308; color: #fefce8; }
-    .badge-red { background-color: #dc2626; color: #fef2f2; }
-    .badge-gray { background-color: #4b5563; color: #e5e7eb; }
-
-    .disclaimer {
-      margin-top: 18px;
-      font-size: 12px;
-      color: #6b7280;
-      border-top: 1px solid #1f2937;
-      padding-top: 8px;
-      line-height: 1.5;
-    }
   </style>
 </head>
 
@@ -188,52 +201,35 @@
     <header class="page-header">
       <div class="page-header-top">
         <div>
-          <div class="page-title">SPX 市场风险状态</div>
-          <div class="page-subtitle">
-            核心指标：30D ATM IV · RR25(30D) · Wing-ATM(30D) · PutSkew25(30D) · 期限结构 · 短期压力（前月-次月）
-          </div>
+          <div class="page-title">SPX 市场风险状态（中期）</div>
         </div>
       </div>
       <div class="tagline">数据日期：2025-12-23</div>
     </header>
 
-    <!-- 市场状态（持续提示直到改变） -->
     <div class="card" style="margin-bottom:16px; padding:12px 16px;">
       <div class="card-header" style="margin-bottom:8px;">
         <div>
-          <div style="font-size:14px; font-weight:600;">市场状态（SPX）</div>
-          <div class="symbol-sub">状态会持续显示，直到发生转变（带滞回）</div>
+          <div style="font-size:14px; font-weight:700;">市场状态（SPX）</div>
         </div>
         <div class="as-of">as of 2025-12-23</div>
       </div>
 
       <div style="display:flex; flex-direction:column; gap:8px; font-size:13px; line-height:1.55;">
         <div>
-          <span class="badge badge-red">市场风险</span>
-          <span style="margin-left:8px; color:#d1d5db;">风险开关触发：尾部保险/偏度/短端压力出现升温信号。</span>
+          <span class="badge badge-green">市场平稳</span>
+          <span style="margin-left:8px; color:#d1d5db;">风险开关未触发（未见一致升温）。</span>
         </div>
 
         <div style="color:#e5e7eb;">
-          建议：减仓或降杠杆；隔夜更保守；必要时用保护性 Put / Collar 兜底。
+          建议：按你的技术信号执行；仓位可正常，但仍遵守止损纪律。
         </div>
 
-        
-        <div style="margin-top:4px; font-size:12px; color:#9ca3af;">
-          触发原因：
-          <ul style="margin:6px 0 0 18px; padding:0;">
-            
-              <li>Wing-ATM(30D) 偏高（+17.5 vol点）：尾部保险偏贵</li>
-            
-              <li>RR25(30D) 很高（+4.1 vol点）：下行保护溢价升温</li>
-            
-              <li>WING 短期压力偏高（+5.0 vol点）：短期尾部需求升温</li>
-            
-          </ul>
-        </div>
         
 
         <div style="color:#9ca3af; font-size:12px;">
-          自 2025-12-23 起（上次转变：2025-12-23 · 初始化）
+          自 2025-12-23 起（上次转变：2025-12-23 · 保持）
+          · risk_score=0
         </div>
       </div>
     </div>
@@ -245,25 +241,25 @@
             <div class="symbol">SPX</div>
             <div class="symbol-sub">
               标的收盘价：6,907.97
-              
-              · 30D ATM：11.1%
-              · IV50(30D)：10.8%
+              （日变动 +0.43%）
             </div>
           </div>
           <div class="as-of">快照日期：2025-12-23</div>
         </div>
 
         <div class="metric-grid">
+          <div class="metric-group">中期风险开关（参与状态）</div>
+
           <div class="metric">
-            <div class="metric-label">30D ATM IV（基准风险溢价）</div>
+            <div class="metric-label">Wing-ATM（30D，10–20% Put Wing - ATM）</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger">
-                11.1%
-                <span class="metric-change">-0.2 vol点</span>
+                +17.5 vol点
+                <span class="metric-change">+0.2 vol点</span>
               </div>
-              <span class="badge badge-green">偏低</span>
+              <span class="dot dot-gray" title="样本不足：需要至少 10 天历史"></span>
             </div>
-            <div class="metric-sub">5/10日均：12.5% / N/A</div>
+            <div class="metric-sub">vs MA10：N/A</div>
           </div>
 
           <div class="metric">
@@ -273,21 +269,32 @@
                 +4.1 vol点
                 <span class="metric-change">-0.1 vol点</span>
               </div>
-              <span class="badge badge-red">很高</span>
+              <span class="dot dot-gray" title="样本不足：需要至少 10 天历史"></span>
             </div>
-            <div class="metric-sub">解读：越高=下行保护更贵（偏度更陡）。</div>
+            <div class="metric-sub">vs MA10：N/A</div>
           </div>
 
           <div class="metric">
-            <div class="metric-label">Wing-ATM（30D，10–20% Put Wing - ATM）</div>
+            <div class="metric-label">期限结构（Term=90D - 30D）</div>
             <div class="metric-badge-row">
               <div class="metric-value history-trigger">
-                +17.5 vol点
-                <span class="metric-change">+0.2 vol点</span>
+                +2.4 vol点
               </div>
-              <span class="badge badge-yellow">偏高</span>
+              <span class="dot dot-gray" title="样本不足：需要至少 10 天历史"></span>
             </div>
-            <div class="metric-sub">解读：尾部（深 OTM Put）整体变贵的强度。</div>
+            <div class="metric-sub">vs MA10：N/A</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label">30D ATM IV（基准波动）</div>
+            <div class="metric-badge-row">
+              <div class="metric-value history-trigger">
+                11.1%
+                <span class="metric-change">-0.2 vol点</span>
+              </div>
+              <span class="dot dot-gray" title="样本不足：需要至少 10 天历史"></span>
+            </div>
+            <div class="metric-sub">MA10：N/A</div>
           </div>
 
           <div class="metric">
@@ -295,11 +302,11 @@
             <div class="metric-badge-row">
               <div class="metric-value history-trigger">
                 +2.7 vol点
-                
+                <span class="metric-change">-0.1 vol点</span>
               </div>
-              <span class="badge badge-yellow">偏高</span>
+              <span class="dot dot-gray" title="样本不足：需要至少 10 天历史"></span>
             </div>
-            <div class="metric-sub">解读：25Δ Put 相对基准（IV50）的下行溢价。</div>
+            <div class="metric-sub">vs MA10：N/A</div>
           </div>
 
           <div class="metric">
@@ -307,58 +314,11 @@
             <div class="metric-badge-row">
               <div class="metric-value history-trigger">
                 -1.4 vol点
-                
+                <span class="metric-change">+0.1 vol点</span>
               </div>
-              <span class="badge badge-green">偏低</span>
+              <span class="dot dot-gray" title="样本不足：需要至少 10 天历史"></span>
             </div>
-            <div class="metric-sub">解读：越高=上行尾部需求更强（可能是泡沫/投机）。</div>
-          </div>
-
-          <div class="metric">
-            <div class="metric-label">期限结构（ATM，90D - 30D）</div>
-            <div class="metric-badge-row">
-              <div class="metric-value history-trigger">
-                +2.4 vol点
-              </div>
-              <span class="badge badge-yellow">中期溢价</span>
-            </div>
-            <div class="metric-sub">解读：为负=短端更贵（事件/恐慌），为正=正常。</div>
-          </div>
-
-          <div class="metric">
-            <div class="metric-label">BF25（30D，0.5*(PutSkew+CallSkew)）</div>
-            <div class="metric-badge-row">
-              <div class="metric-value history-trigger">
-                +0.7 vol点
-                
-              </div>
-              <span class="badge badge-green">温和</span>
-            </div>
-            <div class="metric-sub">解读：两侧翅膀相对基准的“整体抬升/微笑凸性”。</div>
-          </div>
-
-          <div class="metric-group">短期压力（前月 - 次月）</div>
-
-          <div class="metric">
-            <div class="metric-label">短期压力（ATM：前月 - 次月）</div>
-            <div class="metric-badge-row">
-              <div class="metric-value history-trigger">
-                -1.9 vol点
-              </div>
-              <span class="badge badge-gray">中性</span>
-            </div>
-            <div class="metric-sub">解读：为正=短端紧；为负=短端宽松。</div>
-          </div>
-
-          <div class="metric">
-            <div class="metric-label">短期压力（WING：前月 - 次月）</div>
-            <div class="metric-badge-row">
-              <div class="metric-value history-trigger">
-                +5.0 vol点
-              </div>
-              <span class="badge badge-red">短期压力高</span>
-            </div>
-            <div class="metric-sub">解读：为正=短期尾部需求升温。</div>
+            <div class="metric-sub">样本不足：需要至少 10 天历史</div>
           </div>
         </div>
       </section>
@@ -366,11 +326,11 @@
 
     <div class="disclaimer">
       免责声明：本页面仅用于信息展示和教育目的，不构成任何投资建议。数据为日终快照，可能存在延迟或错误。
-      <br/>建议将“状态卡 + 核心三指标（ATM / RR / Wing）”作为仓位风险开关，PutSkew/BF 为补充解释。
+      <br/>状态灯只看中期风险：Wing / RR / Term（vs MA10），并使用滞回阈值 3/0。
     </div>
   </div>
 
-  <!-- 历史弹窗（精简表 + 新增列） -->
+  <!-- 历史弹窗（最近 20 日） -->
   <div id="history-backdrop" class="history-backdrop" style="display:none;"></div>
   <div id="history-panel" class="history-panel" style="display:none;">
     <div class="history-panel-header">
@@ -386,15 +346,11 @@
           <tr>
             <th>日期</th>
             <th>ATM30</th>
-            <th>IV50(30)</th>
-            <th>RR25(30)</th>
+            <th>Wing-ATM</th>
+            <th>RR25</th>
+            <th>Term(90-30)</th>
             <th>PutSkew25</th>
             <th>CallSkew25</th>
-            <th>BF25</th>
-            <th>Wing-ATM(30)</th>
-            <th>90-30</th>
-            <th>STP ATM</th>
-            <th>STP WING</th>
           </tr>
         </thead>
         <tbody id="history-tbody"></tbody>
@@ -403,7 +359,7 @@
   </div>
 
   <script>
-    const HISTORY = [{"date": "2025-11-25", "atm_iv_pct": "15.1%", "iv50_pct": "N/A", "rr25_bp": "+6.2 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+17.0 vol点", "term_30_90_bp": "+0.8 vol点", "stp_atm_bp": "-0.0 vol点", "stp_wing_bp": "+5.4 vol点"}, {"date": "2025-11-26", "atm_iv_pct": "14.2%", "iv50_pct": "N/A", "rr25_bp": "+5.1 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+16.6 vol点", "term_30_90_bp": "+1.3 vol点", "stp_atm_bp": "-0.4 vol点", "stp_wing_bp": "+5.2 vol点"}, {"date": "2025-11-28", "atm_iv_pct": "13.9%", "iv50_pct": "N/A", "rr25_bp": "+5.0 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+15.6 vol点", "term_30_90_bp": "+1.2 vol点", "stp_atm_bp": "-0.3 vol点", "stp_wing_bp": "+4.6 vol点"}, {"date": "2025-12-01", "atm_iv_pct": "14.5%", "iv50_pct": "N/A", "rr25_bp": "+5.3 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+16.1 vol点", "term_30_90_bp": "+1.0 vol点", "stp_atm_bp": "+0.1 vol点", "stp_wing_bp": "+6.8 vol点"}, {"date": "2025-12-02", "atm_iv_pct": "14.3%", "iv50_pct": "N/A", "rr25_bp": "+4.8 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+15.2 vol点", "term_30_90_bp": "+1.1 vol点", "stp_atm_bp": "-0.2 vol点", "stp_wing_bp": "+5.6 vol点"}, {"date": "2025-12-03", "atm_iv_pct": "13.9%", "iv50_pct": "N/A", "rr25_bp": "+4.3 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+15.2 vol点", "term_30_90_bp": "+1.4 vol点", "stp_atm_bp": "-0.5 vol点", "stp_wing_bp": "+5.1 vol点"}, {"date": "2025-12-04", "atm_iv_pct": "13.0%", "iv50_pct": "N/A", "rr25_bp": "+4.5 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+15.0 vol点", "term_30_90_bp": "+2.1 vol点", "stp_atm_bp": "+0.2 vol点", "stp_wing_bp": "+1.9 vol点"}, {"date": "2025-12-05", "atm_iv_pct": "13.3%", "iv50_pct": "N/A", "rr25_bp": "+4.2 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "N/A", "term_30_90_bp": "+2.0 vol点", "stp_atm_bp": "-0.8 vol点", "stp_wing_bp": "N/A"}, {"date": "2025-12-08", "atm_iv_pct": "N/A", "iv50_pct": "N/A", "rr25_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "N/A", "term_30_90_bp": "N/A", "stp_atm_bp": "-0.9 vol点", "stp_wing_bp": "+2.3 vol点"}, {"date": "2025-12-09", "atm_iv_pct": "N/A", "iv50_pct": "N/A", "rr25_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "N/A", "term_30_90_bp": "N/A", "stp_atm_bp": "-0.9 vol点", "stp_wing_bp": "+2.5 vol点"}, {"date": "2025-12-10", "atm_iv_pct": "N/A", "iv50_pct": "N/A", "rr25_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "N/A", "term_30_90_bp": "N/A", "stp_atm_bp": "-1.1 vol点", "stp_wing_bp": "+2.6 vol点"}, {"date": "2025-12-11", "atm_iv_pct": "N/A", "iv50_pct": "N/A", "rr25_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "N/A", "term_30_90_bp": "N/A", "stp_atm_bp": "-3.8 vol点", "stp_wing_bp": "+2.6 vol点"}, {"date": "2025-12-12", "atm_iv_pct": "N/A", "iv50_pct": "N/A", "rr25_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "N/A", "term_30_90_bp": "N/A", "stp_atm_bp": "-1.2 vol点", "stp_wing_bp": "+2.7 vol点"}, {"date": "2025-12-15", "atm_iv_pct": "N/A", "iv50_pct": "N/A", "rr25_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "N/A", "term_30_90_bp": "N/A", "stp_atm_bp": "-1.0 vol点", "stp_wing_bp": "+3.4 vol点"}, {"date": "2025-12-16", "atm_iv_pct": "N/A", "iv50_pct": "N/A", "rr25_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "N/A", "term_30_90_bp": "N/A", "stp_atm_bp": "-1.1 vol点", "stp_wing_bp": "+3.4 vol点"}, {"date": "2025-12-17", "atm_iv_pct": "14.7%", "iv50_pct": "N/A", "rr25_bp": "+4.1 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+15.4 vol点", "term_30_90_bp": "+1.1 vol点", "stp_atm_bp": "-0.5 vol点", "stp_wing_bp": "+3.9 vol点"}, {"date": "2025-12-18", "atm_iv_pct": "13.5%", "iv50_pct": "N/A", "rr25_bp": "+5.7 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+17.3 vol点", "term_30_90_bp": "+1.5 vol点", "stp_atm_bp": "-0.9 vol点", "stp_wing_bp": "+4.5 vol点"}, {"date": "2025-12-19", "atm_iv_pct": "11.9%", "iv50_pct": "N/A", "rr25_bp": "+1.6 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+17.3 vol点", "term_30_90_bp": "+2.1 vol点", "stp_atm_bp": "-1.3 vol点", "stp_wing_bp": "+4.4 vol点"}, {"date": "2025-12-22", "atm_iv_pct": "11.3%", "iv50_pct": "N/A", "rr25_bp": "+4.2 vol点", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A", "bf25_bp": "N/A", "wing_minus_atm_bp": "+17.3 vol点", "term_30_90_bp": "+2.2 vol点", "stp_atm_bp": "-1.7 vol点", "stp_wing_bp": "+4.7 vol点"}, {"date": "2025-12-23", "atm_iv_pct": "11.1%", "iv50_pct": "10.8%", "rr25_bp": "+4.1 vol点", "put_skew25_bp": "+2.7 vol点", "call_skew25_bp": "-1.4 vol点", "bf25_bp": "+0.7 vol点", "wing_minus_atm_bp": "+17.5 vol点", "term_30_90_bp": "+2.4 vol点", "stp_atm_bp": "-1.9 vol点", "stp_wing_bp": "+5.0 vol点"}];
+    const HISTORY = [{"date": "2025-11-25", "atm_iv_pct": "15.1%", "wing_minus_atm_bp": "+17.0 vol点", "rr25_bp": "+6.2 vol点", "term_30_90_bp": "+0.8 vol点", "put_skew25_bp": "+4.1 vol点", "call_skew25_bp": "-2.1 vol点"}, {"date": "2025-11-26", "atm_iv_pct": "14.2%", "wing_minus_atm_bp": "+16.6 vol点", "rr25_bp": "+5.1 vol点", "term_30_90_bp": "+1.3 vol点", "put_skew25_bp": "+3.4 vol点", "call_skew25_bp": "-1.7 vol点"}, {"date": "2025-11-28", "atm_iv_pct": "13.9%", "wing_minus_atm_bp": "+15.6 vol点", "rr25_bp": "+5.0 vol点", "term_30_90_bp": "+1.2 vol点", "put_skew25_bp": "+3.2 vol点", "call_skew25_bp": "-1.8 vol点"}, {"date": "2025-12-01", "atm_iv_pct": "14.5%", "wing_minus_atm_bp": "+16.1 vol点", "rr25_bp": "+5.3 vol点", "term_30_90_bp": "+1.0 vol点", "put_skew25_bp": "+3.4 vol点", "call_skew25_bp": "-1.9 vol点"}, {"date": "2025-12-02", "atm_iv_pct": "14.3%", "wing_minus_atm_bp": "+15.2 vol点", "rr25_bp": "+4.8 vol点", "term_30_90_bp": "+1.1 vol点", "put_skew25_bp": "+3.5 vol点", "call_skew25_bp": "-1.4 vol点"}, {"date": "2025-12-03", "atm_iv_pct": "13.9%", "wing_minus_atm_bp": "+15.2 vol点", "rr25_bp": "+4.3 vol点", "term_30_90_bp": "+1.4 vol点", "put_skew25_bp": "+3.9 vol点", "call_skew25_bp": "-0.4 vol点"}, {"date": "2025-12-04", "atm_iv_pct": "13.0%", "wing_minus_atm_bp": "+15.0 vol点", "rr25_bp": "+4.5 vol点", "term_30_90_bp": "+2.1 vol点", "put_skew25_bp": "+5.9 vol点", "call_skew25_bp": "+1.4 vol点"}, {"date": "2025-12-05", "atm_iv_pct": "13.3%", "wing_minus_atm_bp": "N/A", "rr25_bp": "+4.2 vol点", "term_30_90_bp": "+2.0 vol点", "put_skew25_bp": "+2.8 vol点", "call_skew25_bp": "-1.4 vol点"}, {"date": "2025-12-08", "atm_iv_pct": "N/A", "wing_minus_atm_bp": "N/A", "rr25_bp": "N/A", "term_30_90_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A"}, {"date": "2025-12-09", "atm_iv_pct": "N/A", "wing_minus_atm_bp": "N/A", "rr25_bp": "N/A", "term_30_90_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A"}, {"date": "2025-12-10", "atm_iv_pct": "N/A", "wing_minus_atm_bp": "N/A", "rr25_bp": "N/A", "term_30_90_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A"}, {"date": "2025-12-11", "atm_iv_pct": "N/A", "wing_minus_atm_bp": "N/A", "rr25_bp": "N/A", "term_30_90_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A"}, {"date": "2025-12-12", "atm_iv_pct": "N/A", "wing_minus_atm_bp": "N/A", "rr25_bp": "N/A", "term_30_90_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A"}, {"date": "2025-12-15", "atm_iv_pct": "N/A", "wing_minus_atm_bp": "N/A", "rr25_bp": "N/A", "term_30_90_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A"}, {"date": "2025-12-16", "atm_iv_pct": "N/A", "wing_minus_atm_bp": "N/A", "rr25_bp": "N/A", "term_30_90_bp": "N/A", "put_skew25_bp": "N/A", "call_skew25_bp": "N/A"}, {"date": "2025-12-17", "atm_iv_pct": "14.7%", "wing_minus_atm_bp": "+15.4 vol点", "rr25_bp": "+4.1 vol点", "term_30_90_bp": "+1.1 vol点", "put_skew25_bp": "+2.6 vol点", "call_skew25_bp": "-1.6 vol点"}, {"date": "2025-12-18", "atm_iv_pct": "13.5%", "wing_minus_atm_bp": "+17.3 vol点", "rr25_bp": "+5.7 vol点", "term_30_90_bp": "+1.5 vol点", "put_skew25_bp": "+3.6 vol点", "call_skew25_bp": "-2.1 vol点"}, {"date": "2025-12-19", "atm_iv_pct": "11.9%", "wing_minus_atm_bp": "+17.3 vol点", "rr25_bp": "+1.6 vol点", "term_30_90_bp": "+2.1 vol点", "put_skew25_bp": "+0.2 vol点", "call_skew25_bp": "-1.4 vol点"}, {"date": "2025-12-22", "atm_iv_pct": "11.3%", "wing_minus_atm_bp": "+17.3 vol点", "rr25_bp": "+4.2 vol点", "term_30_90_bp": "+2.2 vol点", "put_skew25_bp": "+2.8 vol点", "call_skew25_bp": "-1.4 vol点"}, {"date": "2025-12-23", "atm_iv_pct": "11.1%", "wing_minus_atm_bp": "+17.5 vol点", "rr25_bp": "+4.1 vol点", "term_30_90_bp": "+2.4 vol点", "put_skew25_bp": "+2.7 vol点", "call_skew25_bp": "-1.4 vol点"}];
 
     (function () {
       const backdrop = document.getElementById('history-backdrop');
@@ -416,15 +372,11 @@
           <tr>
             <td>${r.date ?? '-'}</td>
             <td>${r.atm_iv_pct ?? '-'}</td>
-            <td>${r.iv50_pct ?? '-'}</td>
+            <td>${r.wing_minus_atm_bp ?? '-'}</td>
             <td>${r.rr25_bp ?? '-'}</td>
+            <td>${r.term_30_90_bp ?? '-'}</td>
             <td>${r.put_skew25_bp ?? '-'}</td>
             <td>${r.call_skew25_bp ?? '-'}</td>
-            <td>${r.bf25_bp ?? '-'}</td>
-            <td>${r.wing_minus_atm_bp ?? '-'}</td>
-            <td>${r.term_30_90_bp ?? '-'}</td>
-            <td>${r.stp_atm_bp ?? '-'}</td>
-            <td>${r.stp_wing_bp ?? '-'}</td>
           </tr>
         `).join('');
 
