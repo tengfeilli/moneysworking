@@ -155,11 +155,24 @@
 
   // 把各种可能的字段值，归一化成 "green"/"red"
   function normalizeLight(x){
-    const s = String(x || "").toLowerCase();
-    if (/green|偏多|看多|多头|绿/.test(s)) return "green";
-    if (/red|风险|防守|偏空|看空|空头|红/.test(s)) return "red";
-    return "";
-  }
+  const s = String(x || "").toLowerCase();
+
+  // ✅ 兼容 badge_class
+  if (s.includes("badge-green")) return "green";
+  if (s.includes("badge-red")) return "red";
+  if (s.includes("badge-amber") || s.includes("badge-yellow")) return "amber";
+
+  // ✅ 兼容 state
+  if (s.includes("risk_off")) return "green";
+  if (s.includes("risk_on")) return "red";
+
+  // ✅ 兼容常规文字
+  if (/green|偏多|看多|多头|平稳|正常|稳/.test(s)) return "green";
+  if (/amber|yellow|中性|观望|震荡/.test(s)) return "amber";
+  if (/red|风险|防守|偏空|看空|空头/.test(s)) return "red";
+  return "";
+}
+
 
   // ✅ 核心：只要任何一个候选灯是 green => green；否则 red
   function pickLight(payload, fallbackStateCN){
@@ -173,6 +186,9 @@
   // ✅ 兼容 lights: ["red","green"] 或 lights: {ma20:"red", combo:"green"}
   if (payload.lights && Array.isArray(payload.lights)) candidates.push(...payload.lights);
   if (payload.lights && typeof payload.lights === "object") candidates.push(...Object.values(payload.lights));
+
+  if (payload.badge_class) candidates.push(payload.badge_class);
+  if (payload.state) candidates.push(payload.state);
 
   // ✅ 关键：从 reason 文本里解析（你现在就是这种：MA20=RED，组合=GREEN）
   const reason = payload.market_state_reason_cn || payload.reason_cn || payload.reason || "";
@@ -193,9 +209,9 @@
 
 
   function renderStatus(el, payload){
-    const tradeDate = payload.trade_date || payload.tradeDate || "";
-    const stateCN   = payload.market_state_cn || payload.state_cn || payload.state || "";
-    const reasonCN  = payload.market_state_reason_cn || payload.reason_cn || "";
+    const tradeDate = payload.trade_date || payload.tradeDate || payload.since_trade_date || "";
+    const stateCN   = payload.title_cn || payload.market_state_cn || payload.state_cn || payload.state || "";
+    const reasonCN  = payload.message || payload.market_state_reason_cn || payload.reason_cn || payload.reason || "";
 
     const light = pickLight(payload, stateCN);
 
