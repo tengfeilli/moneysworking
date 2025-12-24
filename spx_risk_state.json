@@ -4,10 +4,15 @@
   "title_cn": "市场平稳",
   "message": "风险开关未触发（未见一致升温）。",
   "action": "建议：按你的技术信号执行；仓位可正常，但仍遵守止损纪律。",
-  "reasons": [],
+  "reasons": [
+    "结构投票：2/3（z_wing=1.50, z_rr=-0.40, z_term=1.30）"
+  ],
   "since_trade_date": "2025-12-23",
   "last_change_trade_date": "2025-12-23",
   "transition": "保持",
   "trade_date": "2025-12-23",
-  "risk_score": 0
+  "risk_score": 0,
+  "on_streak": 0,
+  "off_streak": 0,
+  "score_detail": 2
 }
