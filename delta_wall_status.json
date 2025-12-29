@@ -1,6 +1,6 @@
 {
   "trade_date": "2025-12-26",
-  "market_state": "Neutral",
-  "market_state_reason": "Over the last two sessions, both Call/Put Δ cooled — structure is de-risking.",
-  "light": "green"
+  "market_state_cn": "偏防守",
+  "market_state_reason_cn": "近两日 Put Δ 强度上升，而 Call 减少/变化不明显：下行对冲需求在增强",
+  "light": "red"
 }
