@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Breadth Overview - SP500 (2025-12-26)</title>
+  <title>Breadth Overview - SP500 (2025-12-29)</title>
   <style>
     body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -180,7 +180,7 @@ h1,h2,h3 { color: var(--text); }
     <div>
       <h1 style="margin-bottom: 0.2rem;">
         Breadth Overview - <span id="index-title">SP500</span>
-        <span class="index-tag" id="index-date">2025-12-26</span>
+        <span class="index-tag" id="index-date">2025-12-29</span>
       </h1>
       <div style="margin-top: 0.2rem;">
         <a href="index.html" class="back-link">&larr; 返回首页</a>
@@ -251,7 +251,7 @@ h1,h2,h3 { color: var(--text); }
   </div>
 
     <script>
-    const INDEX_DATA = {"sp500": {"code": "sp500", "name": "SP500", "date": "2025-12-26", "headline": "启动灯：<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>（上次转灯：2025-12-16 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>）<br>组合灯：<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>（上次转灯：2025-12-11 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>）", "bullets": ["更多个股正在向高位聚集，宽度在向上涨方向扩张。", "早前积累的下行压力在逐步释放。", "多头结构在时间和空间上都在得到确认，局势逐步明朗。"], "chart_src_all": "sp500_breadth_chart.html", "chart_src_1y": "sp500_breadth_chart_1y.html", "ma20_state": "RED", "combo_state": "GREEN"}, "ndx100": {"code": "ndx100", "name": "NDX100", "date": "2025-12-26", "headline": "启动灯：<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>（上次转灯：2025-12-22 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>）<br>组合灯：<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>（上次转灯：2025-12-22 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>）", "bullets": ["更多个股正在向高位聚集，宽度在向上涨方向扩张。", "多头结构在时间和空间上都在得到确认，局势逐步明朗。"], "chart_src_all": "ndx100_breadth_chart.html", "chart_src_1y": "ndx100_breadth_chart_1y.html", "ma20_state": "GREEN", "combo_state": "GREEN"}};
+    const INDEX_DATA = {"sp500": {"code": "sp500", "name": "SP500", "date": "2025-12-29", "headline": "启动灯：<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>（上次转灯：2025-12-16 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>）<br>组合灯：<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>（上次转灯：2025-12-11 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>）", "bullets": ["更多个股正在向高位聚集，宽度在向上涨方向扩张。", "早前积累的下行压力在逐步释放。", "多头结构在时间和空间上都在得到确认，局势逐步明朗。"], "chart_src_all": "sp500_breadth_chart.html", "chart_src_1y": "sp500_breadth_chart_1y.html", "ma20_state": "RED", "combo_state": "GREEN"}, "ndx100": {"code": "ndx100", "name": "NDX100", "date": "2025-12-29", "headline": "启动灯：<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>（上次转灯：2025-12-29 <span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>→<span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>）<br>组合灯：<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>（上次转灯：2025-12-22 <span class=\"light-dot dot-red\" title=\"RED\" aria-label=\"RED\"></span>→<span class=\"light-dot dot-green\" title=\"GREEN\" aria-label=\"GREEN\"></span>）", "bullets": ["更多个股正在向高位聚集，宽度在向上涨方向扩张。"], "chart_src_all": "ndx100_breadth_chart.html", "chart_src_1y": "ndx100_breadth_chart_1y.html", "ma20_state": "RED", "combo_state": "GREEN"}};
     const DEFAULT_CODE = "sp500";
 
     function renderIndex(code, rangeMode) {
