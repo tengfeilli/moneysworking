@@ -36,7 +36,6 @@
     }
 
     .page-title { font-size: 26px; font-weight: 600; margin-bottom: 4px; }
-    .page-subtitle { font-size: 13px; color: #9ca3af; }
     .tagline { font-size: 12px; color: #9ca3af; }
 
     .metric-change { font-size: 11px; color: #9ca3af; margin-left: 6px; }
@@ -109,7 +108,6 @@
     }
     .badge-green { background-color: #16a34a; color: #ecfdf3; }
     .badge-red { background-color: #dc2626; color: #fef2f2; }
-    .badge-gray { background-color: #4b5563; color: #e5e7eb; }
 
     .dot {
       width: 10px;
@@ -230,7 +228,7 @@
           触发原因：
           <ul style="margin:6px 0 0 18px; padding:0;">
             
-              <li>结构平稳：0/3（z_wing=-2.69, z_rr=-0.58, z_term=0.54）</li>
+              <li>结构投票：0/3（z_wing=-2.69, z_rr=-0.58, z_term_risk=-0.54；>= 1.1 计票）</li>
             
           </ul>
         </div>
@@ -238,7 +236,9 @@
 
         <div style="color:#9ca3af; font-size:12px;">
           自 2025-12-23 起（上次转变：2025-12-23 · 保持）
-          · risk_score=0
+          · risk=0
+          / score_detail=0
+          · on_streak=0 · off_streak=6
         </div>
       </div>
     </div>
@@ -288,6 +288,7 @@
             <div class="metric-badge-row">
               <div class="metric-value history-trigger">
                 +2.0 vol点
+                <span class="metric-change">-0.4 vol点</span>
               </div>
               <span class="dot dot-green" title="vs MA10：+0.1 vp（阈值≤-0.2 为红）"></span>
             </div>
@@ -303,7 +304,7 @@
               </div>
               <span class="dot dot-green" title="vs MA10：-0.5 vp（阈值≥+0.2 为红）"></span>
             </div>
-            <div class="metric-sub">MA10：12.3%</div>
+            <div class="metric-sub">vs MA10：-0.5 vp</div>
           </div>
 
           <div class="metric">
@@ -325,9 +326,9 @@
                 -1.4 vol点
                 <span class="metric-change">+0.0 vol点</span>
               </div>
-              <span class="dot dot-green" title="大于MA10：绿灯"></span>
+              <span class="dot dot-green" title="大于MA10：绿灯；Call涨价，股价上行"></span>
             </div>
-            <div class="metric-sub">Call涨价，股价上行</div>
+            <div class="metric-sub">vs MA10：+0.2 vp</div>
           </div>
         </div>
       </section>

@@ -5,7 +5,7 @@
   "message": "风险开关未触发（未见一致升温）。",
   "action": "建议：按你的技术信号执行；仓位可正常，但仍遵守止损纪律。",
   "reasons": [
-    "结构平稳：0/3（z_wing=-2.69, z_rr=-0.58, z_term=0.54）"
+    "结构投票：0/3（z_wing=-2.69, z_rr=-0.58, z_term_risk=-0.54；>= 1.1 计票）"
   ],
   "since_trade_date": "2025-12-23",
   "last_change_trade_date": "2025-12-23",
@@ -13,6 +13,6 @@
   "trade_date": "2025-12-29",
   "risk_score": 0,
   "on_streak": 0,
-  "off_streak": 4,
+  "off_streak": 6,
   "score_detail": 0
 }
