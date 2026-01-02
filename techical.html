@@ -1,0 +1,214 @@
+
+    <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Signals</title>
+      
+    <style>
+      :root{
+        --bg:#0b1220;
+        --panel:#0f1a2c;
+        --border:rgba(255,255,255,.08);
+        --text:#e5e7eb;
+        --muted:#9ca3af;
+        --green:#22c55e;
+        --red:#ef4444;
+      }
+      *{ box-sizing:border-box; }
+      body{
+        margin:0;
+        background: radial-gradient(1200px 800px at 20% 0%, rgba(34,197,94,.08), transparent 40%),
+                    radial-gradient(1200px 800px at 80% 0%, rgba(239,68,68,.08), transparent 40%),
+                    var(--bg);
+        color:var(--text);
+        font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+      }
+      .wrap{ max-width: 1200px; margin: 0 auto; padding: 22px 18px 30px; }
+      h1{ margin:0 0 6px; font-size:20px; letter-spacing:.2px;}
+      .meta{ color:var(--muted); font-size:12px; margin-bottom:14px; }
+      .summary{ display:flex; gap:10px; flex-wrap:wrap; margin: 10px 0 16px; }
+      .chip{
+        background: rgba(255,255,255,.04);
+        border:1px solid var(--border);
+        border-radius:999px;
+        padding:8px 12px;
+        font-size:12px;
+        color:var(--muted);
+      }
+      .chip b{ color:var(--text); }
+      .grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
+      .panel{
+        background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow:hidden;
+      }
+      .panel-head{
+        padding: 12px 14px;
+        background: rgba(255,255,255,.03);
+        border-bottom:1px solid var(--border);
+        display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+      }
+      .panel-title{ font-size:14px; font-weight:700; }
+      .panel-sub{ font-size:12px; color:var(--muted); }
+      .list{
+        padding: 12px 12px 14px;
+        display:grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+      @media (max-width: 1100px){ .list{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (max-width: 520px){ .list{ grid-template-columns: 1fr; } }
+      .item{
+        display:flex; align-items:center; gap:10px;
+        padding: 10px 10px;
+        border-radius: 12px;
+        border:1px solid rgba(255,255,255,.06);
+        background: rgba(15,26,44,.55);
+        transition: transform .08s ease, border-color .12s ease;
+      }
+      .item:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.12); }
+      .dot{ width:10px; height:10px; border-radius:50%; flex:0 0 auto; }
+      .green{ background: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,.12); }
+      .red{ background: var(--red); box-shadow: 0 0 0 3px rgba(239,68,68,.12); }
+      .code{
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono";
+        font-size: 13px;
+        letter-spacing: .2px;
+      }
+      .rule{ margin-top:6px; color: rgba(229,231,235,.8); font-size: 12px; }
+      .rule code{
+        color: rgba(229,231,235,.95);
+        background: rgba(255,255,255,.05);
+        border: 1px solid rgba(255,255,255,.08);
+        padding: 1px 6px;
+        border-radius: 999px;
+      }
+      .footnote{ margin-top: 14px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    </style>
+    
+    </head>
+    <body>
+      <div class="wrap">
+        <h1>B / M 信号（仅灯号列表）</h1>
+        <div class="meta">生成时间：2026-01-02 08:35:10 ｜ 监控清单：/Users/tengfeili/Projects/MarketData_US/technical/W.csv</div>
+
+        <div class="summary">
+          <div class="chip"><b>B</b> 绿灯：<b>1</b> / 38</div>
+          <div class="chip"><b>M</b> 绿灯：<b>3</b> / 38</div>
+          <div class="chip">提示：红灯项可鼠标悬停查看“不满足项”</div>
+        </div>
+
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">B 列表（左）</div>
+                <div class="rule">规则：<code>VOL&gt;VOL5</code> <code>K&gt;D</code> <code>K&lt;50</code> <code>Close&gt;MA5</code></div>
+              </div>
+              <div class="panel-sub">绿灯=满足｜红灯=不满足</div>
+            </div>
+            <div class="list">
+              <div class="item ok" title="">  <span class="dot green"></span>  <span class="code">ARQT.US</span></div>
+<div class="item bad" title="K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">ALAB.US</span></div>
+<div class="item bad" title="K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">AMD.US</span></div>
+<div class="item bad" title="K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">ANAB.US</span></div>
+<div class="item bad" title="K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">APH.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K<=D,Close<=MA5">  <span class="dot red"></span>  <span class="code">APP.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K<=D,Close<=MA5">  <span class="dot red"></span>  <span class="code">ASTS.US</span></div>
+<div class="item bad" title="K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">CAH.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">CDE.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">CIEN.US</span></div>
+<div class="item bad" title="K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">COHR.US</span></div>
+<div class="item bad" title="Close<=MA5">  <span class="dot red"></span>  <span class="code">CRDO.US</span></div>
+<div class="item bad" title="K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">DAVE.US</span></div>
+<div class="item bad" title="K<=D,Close<=MA5">  <span class="dot red"></span>  <span class="code">DY.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">FIX.US</span></div>
+<div class="item bad" title="K>=50">  <span class="dot red"></span>  <span class="code">GH.US</span></div>
+<div class="item bad" title="K<=D,Close<=MA5">  <span class="dot red"></span>  <span class="code">HOOD.US</span></div>
+<div class="item bad" title="K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">HWM.US</span></div>
+<div class="item bad" title="K>=50">  <span class="dot red"></span>  <span class="code">INTC.US</span></div>
+<div class="item bad" title="K<=D">  <span class="dot red"></span>  <span class="code">JMIA.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">KRMN.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">LITE.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K<=D,Close<=MA5">  <span class="dot red"></span>  <span class="code">LULU.US</span></div>
+<div class="item bad" title="K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">MIRM.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">MU.US</span></div>
+<div class="item bad" title="K<=D,Close<=MA5">  <span class="dot red"></span>  <span class="code">NUTX.US</span></div>
+<div class="item bad" title="K>=50">  <span class="dot red"></span>  <span class="code">ONDS.US</span></div>
+<div class="item bad" title="K<=D,Close<=MA5">  <span class="dot red"></span>  <span class="code">OUST.US</span></div>
+<div class="item bad" title="K<=D,Close<=MA5">  <span class="dot red"></span>  <span class="code">PLTR.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">RKLB.US</span></div>
+<div class="item bad" title="K<=D,Close<=MA5">  <span class="dot red"></span>  <span class="code">ROKU.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">SNDK.US</span></div>
+<div class="item bad" title="K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">SNPS.US</span></div>
+<div class="item bad" title="K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">TE.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">TVTX.US</span></div>
+<div class="item bad" title="K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">UNH.US</span></div>
+<div class="item bad" title="K<=D,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">VIK.US</span></div>
+<div class="item bad" title="VOL<=VOL5,K>=50,Close<=MA5">  <span class="dot red"></span>  <span class="code">VRT.US</span></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">M 列表（右）</div>
+                <div class="rule">
+                  规则：<code>Close&gt;MA5/20/50</code> <code>50&lt;RSI12&lt;70</code> <code>Open/Close&gt;PrevClose</code>
+                </div>
+              </div>
+              <div class="panel-sub">绿灯=满足｜红灯=不满足</div>
+            </div>
+            <div class="list">
+              <div class="item ok" title="">  <span class="dot green"></span>  <span class="code">GH.US</span></div>
+<div class="item ok" title="">  <span class="dot green"></span>  <span class="code">JMIA.US</span></div>
+<div class="item ok" title="">  <span class="dot green"></span>  <span class="code">ONDS.US</span></div>
+<div class="item bad" title="Close<=MA5,Open<=PrevClose,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">ALAB.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA50,RSI<=50,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">AMD.US</span></div>
+<div class="item bad" title="Close<=MA5,Open<=PrevClose">  <span class="dot red"></span>  <span class="code">ANAB.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=MA50,RSI<=50,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">APH.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,RSI<=50,Open<=PrevClose,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">APP.US</span></div>
+<div class="item bad" title="Close<=MA20,Open<=PrevClose">  <span class="dot red"></span>  <span class="code">ARQT.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">ASTS.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">CAH.US</span></div>
+<div class="item bad" title="Close<=MA5,Open<=PrevClose,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">CDE.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">CIEN.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">COHR.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=MA50,RSI<=50,Open<=PrevClose,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">CRDO.US</span></div>
+<div class="item bad" title="Close<=MA5">  <span class="dot red"></span>  <span class="code">DAVE.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,RSI<=50,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">DY.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=MA50,RSI<=50,Open<=PrevClose,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">FIX.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=MA50,RSI<=50,Open<=PrevClose,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">HOOD.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">HWM.US</span></div>
+<div class="item bad" title="Close<=MA20,Close<=MA50,RSI<=50,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">INTC.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">KRMN.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">LITE.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">LULU.US</span></div>
+<div class="item bad" title="Close<=MA5">  <span class="dot red"></span>  <span class="code">MIRM.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">MU.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Open<=PrevClose,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">NUTX.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=MA50,RSI<=50,Open<=PrevClose">  <span class="dot red"></span>  <span class="code">OUST.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=MA50,RSI<=50,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">PLTR.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">RKLB.US</span></div>
+<div class="item bad" title="Close<=MA5,Open<=PrevClose,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">ROKU.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">SNDK.US</span></div>
+<div class="item bad" title="Close<=MA5,Open<=PrevClose,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">SNPS.US</span></div>
+<div class="item bad" title="Close<=MA5">  <span class="dot red"></span>  <span class="code">TE.US</span></div>
+<div class="item bad" title="Close<=MA5">  <span class="dot red"></span>  <span class="code">TVTX.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=MA50,RSI<=50,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">UNH.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">VIK.US</span></div>
+<div class="item bad" title="Close<=MA5,Close<=MA20,Close<=MA50,RSI<=50,Close<=PrevClose">  <span class="dot red"></span>  <span class="code">VRT.US</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footnote">
+          页面不显示任何指标数值，只显示灯号与代码。红灯的“不满足项”放在 hover 提示里。
+        </div>
+      </div>
+    </body>
+    </html>
+    
