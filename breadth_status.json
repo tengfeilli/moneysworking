@@ -1,6 +1,6 @@
 {
-  "trade_date": "2025-12-31",
+  "trade_date": "2026-01-02",
   "market_state_cn": "偏防守",
-  "market_state_reason_cn": "SP500：MA20=RED，组合=RED",
+  "market_state_reason_cn": "SP500：MA20=GREEN，组合=RED",
   "light": "red"
 }
